@@ -11,7 +11,8 @@
     "flow-generate": "nnode node_modules/flow-bin/vendor/flow gen-flow-files ./src/index.js > ./src/index.js.flow",
     "flow-coverage": "node node_modules/flow-coverage-report/bin/flow-coverage-report.js -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o test_results/coverage/flow",
     "test": "node node_modules/karma/bin/karma start karma.conf.js",
-    "build": "node node_modules/rollup/bin/rollup --config ./rollup.config.js"
+    "build": "node node_modules/rollup/bin/rollup --config ./rollup.config.js",
+    "report-coverage": "codecov"
   },
   "repository": {
     "type": "git",
