@@ -1,0 +1,52 @@
+// @flow
+
+declare class Class0 {
+  static error(): Class0;
+  static redirect(url: string, status?: number): Class0;
+
+  body: ?ReadableStream;
+  bodyUsed: boolean;
+  headers: Headers;
+  ok: boolean;
+  redirected: boolean;
+  status: number;
+  statusText: string;
+  trailer: Promise<Headers>;
+  type: "basic" | "cors" | "default" | "error" | "opaque" | "opaqueredirect";
+  url: string;
+  arrayBuffer(): Promise<ArrayBuffer>;
+  blob(): Promise<Blob>;
+  clone(): Class0;
+  constructor(input?: ?string | URLSearchParams | FormData | Blob | ArrayBuffer | $TypedArray | DataView, init?: {headers?: Headers | {[key: string]: string}, status?: number, statusText?: string}): void;
+  formData(): Promise<FormData>;
+  json(): Promise<any>;
+  text(): Promise<string>;
+}
+declare export class Api {
+  static convertData(data: {[key: string | number]: string | number}, to?: ?"json" | "formdata"): string | FormData;
+  static convertParametersToUrl(parameters: {[key: string | number]: string | number}): string;
+
+  apiUrl: string;
+  defaultHeaders: {[key: string | number]: string | number};
+  defaultOptions: {[key: string | number]: string | number};
+  getDefaultHeaders: () => {[key: string | number]: string | number};
+  processors: Array<(response: any) => Promise<any>>;
+  constructor(apiUrl: string, processors?: Array<(response: any) => Promise<any>>, defaultHeaders?: {[key: string | number]: string | number}, defaultOptions?: {[key: string | number]: string | number}): void;
+  delete(namespace: string): Promise<mixed>;
+  get(namespace: string, parameters?: {[key: string | number]: string | number}): Promise<mixed>;
+  getDefaultHeaders(): {[key: string | number]: string | number};
+  post(namespace: string, data?: {[key: string | number]: string | number}, format?: ?"json" | "formdata"): Promise<mixed>;
+  put(namespace: string, data?: {[key: string | number]: string | number}, format?: ?"json" | "formdata"): Promise<mixed>;
+  removeDefaultHeader(name: string): void;
+  request(namespace: string, method: "GET" | "POST" | "DELETE" | "HEAD" | "OPTIONS" | "PUT" | "PATCH" | "TRACE", options?: Object, headers?: {[key: string | number]: string | number}): Promise<mixed>;
+  setDefaultHeader(name: string, value: string): void;
+  setDefaultHeaders(headers: {[key: string | number]: string | number}): void;
+}
+export type ApiResponseType<Respond> = {data: Respond, source: Class0, status: number};
+
+declare export var FORM_DATA_FORMAT: "formdata";
+export type Format = "json" | "formdata";
+declare export var JSON_FORMAT: "json";
+export type ProcessedResponse = {data: Respond, source: Class0<Object | string>, status: number};
+declare export function defaultResponseProcessor(response: Class0): Promise<{data: Respond, source: Class0<Object | string>, status: number}>;
+
