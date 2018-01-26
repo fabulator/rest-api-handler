@@ -1,4 +1,5 @@
 # API Handler
+[![codecov](https://img.shields.io/npm/v/api-handler.svg)](https://www.npmjs.com/package/api-handler) [![codecov](https://codecov.io/gh/fabulator/api-handler/branch/master/graph/badge.svg)](https://codecov.io/gh/fabulator/api-handler) [![codecov](https://travis-ci.org/fabulator/api-handler.svg?branch=master)](https://travis-ci.org/fabulator/api-handler)
 
 This library will help you with requests to REST APIs. It uses [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) which isn't supported by node and some [older browsers](https://caniuse.com/#feat=fetch). Remember to include polyfill if need it.
 
