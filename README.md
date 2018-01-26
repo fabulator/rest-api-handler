@@ -1,5 +1,5 @@
-# API Handler
-[![codecov](https://img.shields.io/npm/v/api-handler.svg)](https://www.npmjs.com/package/api-handler) [![codecov](https://codecov.io/gh/fabulator/api-handler/branch/master/graph/badge.svg)](https://codecov.io/gh/fabulator/api-handler) [![codecov](https://travis-ci.org/fabulator/api-handler.svg?branch=master)](https://travis-ci.org/fabulator/api-handler)
+# REST API Handler
+[![codecov](https://img.shields.io/npm/v/rest-api-handler.svg)](https://www.npmjs.com/package/rest-api-handler) [![codecov](https://codecov.io/gh/fabulator/rest-api-handler/branch/master/graph/badge.svg)](https://codecov.io/gh/fabulator/rest-api-handler) [![codecov](https://travis-ci.org/fabulator/rest-api-handler.svg?branch=master)](https://travis-ci.org/fabulator/rest-api-handler)
 
 This library will help you with requests to REST APIs. It uses [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) which isn't supported by node and some [older browsers](https://caniuse.com/#feat=fetch). Remember to include polyfill if need it.
 
@@ -8,13 +8,13 @@ This library will help you with requests to REST APIs. It uses [Fetch API](https
 Install npm library:
 
 ```node
-npm install api-handler --save
+npm install rest-api-handler --save
 ```
 
 First initiate Api class and then you can send HTTP requests. As first parameter use base url.
 
 ```javascript
-import { Api } from 'api-handler';
+import { Api } from 'rest-api-handler';
 
 const api = new Api('https://api.blockcypher.com');
 
@@ -27,7 +27,7 @@ api.get('v1/btc/main').then((response) => {
 In default configuration, response is same as in Fetch API. That why you can define your own processors that will parse responses or use default one provided by this library.
 
 ```javascript
-import { Api, defaultResponseProcessor } from 'api-handler';
+import { Api, defaultResponseProcessor } from 'rest-api-handler';
 
 const api = new Api('https://api.blockcypher.com', [
     defaultResponseProcessor,
@@ -83,7 +83,7 @@ api.request('endpoint', 'PUT', {
 By default, data for POST and PUT are encoded as JSON. You can also encode them as FormData. This can be used for images or files uploading.
 
 ```javascript
-import { Api, defaultResponseProcessor, FORM_DATA_FORMAT } from 'api-handler';
+import { Api, defaultResponseProcessor, FORM_DATA_FORMAT } from 'rest-api-handler';
 const api = new Api('//some.api.com');
 
 api.post('file-upload', {
@@ -123,7 +123,7 @@ To use it as node library, just import Fetch polyfill:
 
 ```javascript
 require('isomorphic-fetch');
-const { Api, defaultResponseProcessor } = require('api-handler');
+const { Api, defaultResponseProcessor } = require('rest-api-handler');
 
 const api = new Api('https://api.blockcypher.com', [ defaultResponseProcessor ]);
 

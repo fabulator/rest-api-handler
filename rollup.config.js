@@ -4,10 +4,10 @@ import packpage from './package.json';
 export default {
     input: './src/index.js',
     output: [ {
-        file: 'dist/api-handler.es.js',
+        file: 'dist/rest-api-handler.es.js',
         format: 'es',
     }, {
-        file: 'dist/api-handler.js',
+        file: 'dist/rest-api-handler.js',
         format: 'umd',
         name: 'apiHandler',
     } ],
