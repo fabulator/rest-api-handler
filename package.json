@@ -1,9 +1,10 @@
 {
   "name": "rest-api-handler",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Handler for REST APIs",
   "main": "dist/rest-api-handler.js",
   "jsnext:main": "dist/rest-api-handler.es.js",
+  "module": "dist/rest-api-handler.es.js",
   "scripts": {
     "js-lint": "node node_modules/eslint/bin/eslint.js --ext .jsx --ext .js ./src",
     "js-lint-export": "node node_modules/eslint/bin/eslint.js --ext .jsx --ext .js ./src -o ./test_results/checkstyle/js-checkstyle.xml -f checkstyle",
