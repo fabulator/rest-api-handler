@@ -1,5 +1,4 @@
 // @flow
-
 declare class Class0 {
   static error(): Class0;
   static redirect(url: string, status?: number): Class0;
@@ -29,9 +28,8 @@ declare export class Api {
   apiUrl: string;
   defaultHeaders: {[key: string | number]: string | number};
   defaultOptions: {[key: string | number]: string | number};
-  getDefaultHeaders: () => {[key: string | number]: string | number};
-  processors: Array<(response: any) => Promise<any>>;
-  constructor(apiUrl: string, processors?: Array<(response: any) => Promise<any>>, defaultHeaders?: {[key: string | number]: string | number}, defaultOptions?: {[key: string | number]: string | number}): void;
+  processors: Array<(response: any) => Promise<any> | {processResponse: (response: any) => Promise<any>}>;
+  constructor(apiUrl: string, processors?: Array<(response: any) => Promise<any> | {processResponse: (response: any) => Promise<any>}>, defaultHeaders?: {[key: string | number]: string | number}, defaultOptions?: {[key: string | number]: string | number}): void;
   delete(namespace: string): Promise<mixed>;
   get(namespace: string, parameters?: {[key: string | number]: string | number}): Promise<mixed>;
   getDefaultHeaders(): {[key: string | number]: string | number};
@@ -44,9 +42,22 @@ declare export class Api {
 }
 export type ApiResponseType<Respond> = {data: Respond, source: Class0, status: number};
 
+declare export class DefaultApiException {
+
+  response: {data: Respond, source: Class0<Object | string>, status: number};
+  constructor(response: {data: Respond, source: Class0<Object | string>, status: number}): void;
+}
+declare export class DefaultResponseProcessor {
+
+  Exception: any;
+  processResponse: (response: Class0) => Promise<{data: Respond, source: Class0<Object | string>, status: number}>;
+  constructor(Exception: any): void;
+  processResponse(response: Class0): Promise<{data: Respond, source: Class0<Object | string>, status: number}>;
+}
 declare export var FORM_DATA_FORMAT: "formdata";
 export type Format = "json" | "formdata";
 declare export var JSON_FORMAT: "json";
 export type ProcessedResponse = {data: Respond, source: Class0<Object | string>, status: number};
+export type ProcessorAdapter = (response: any) => Promise<any> | {processResponse: (response: any) => Promise<any>};
 declare export function defaultResponseProcessor(response: Class0): Promise<{data: Respond, source: Class0<Object | string>, status: number}>;
 

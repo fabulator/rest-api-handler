@@ -4,14 +4,24 @@
 	(factory((global.apiHandler = {})));
 }(this, (function (exports) { 'use strict';
 
+/**
+ * Resolve given processor.
+ *
+ * @param {any} response - Response to process.
+ * @param {Array<ProcessorAdapter>} list - Array of processors.
+ * @param {number} i - Index of current processor.
+ * @returns {any} Processed response
+ */
 function resolveArray(response, list) {
     var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
 
-    if (!list[i]) {
+    var processor = list[i];
+
+    if (!processor) {
         return response;
     }
 
-    return list[i](response).then(function (processedResponse) {
+    return (typeof processor === 'function' ? processor(response) : processor.processResponse(response)).then(function (processedResponse) {
         if (list[i + 1]) {
             return resolveArray(processedResponse, list, i + 1);
         }
@@ -19,6 +29,8 @@ function resolveArray(response, list) {
         return processedResponse;
     });
 }
+
+// processor can be function or instance of class
 
 var JSON_FORMAT = 'json';
 var FORM_DATA_FORMAT = 'formdata';
@@ -243,6 +255,12 @@ var Api = function () {
     return Api;
 }();
 
+/**
+ * Decode API body response.
+ *
+ * @param {Response} response - Native response.
+ * @returns {Object | string} Decoded json or simple string.
+ */
 function decodeResponse(response) {
     if (response.headers.get('content-type').indexOf('application/json') !== -1) {
         return response.json();
@@ -251,6 +269,12 @@ function decodeResponse(response) {
     return response.text();
 }
 
+/**
+ * Process response from API.
+ *
+ * @param {Response} response - Native response.
+ * @returns {Promise<ProcessedResponse>} Processed response from API.
+ */
 var responseProcessor = (function (response) {
     return decodeResponse(response).then(function (decodedResponse) {
         // create custom response format
@@ -270,10 +294,77 @@ var responseProcessor = (function (response) {
     });
 });
 
+var _createClass$1 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Processor provider that process response from API and throw custom Exception.
+ */
+var DefaultResponseProcessor = function () {
+
+    /**
+     * Constructor.
+     *
+     * @param {any} Exception - Exception class that will be throwed if request fails.
+     */
+    function DefaultResponseProcessor(Exception) {
+        _classCallCheck$1(this, DefaultResponseProcessor);
+
+        this.Exception = Exception;
+        this.processResponse = this.processResponse.bind(this);
+    }
+
+    /**
+     * Process response from API.
+     *
+     * @param {Response} response - Native fetch response
+     * @returns {Promise<ProcessedResponse>} Processed response.
+     */
+
+
+    _createClass$1(DefaultResponseProcessor, [{
+        key: 'processResponse',
+        value: function processResponse(response) {
+            var _this = this;
+
+            return responseProcessor(response).catch(function (exception) {
+                if (exception.data && exception.status && exception.source) {
+                    throw new _this.Exception(exception);
+                }
+
+                throw exception;
+            });
+        }
+    }]);
+
+    return DefaultResponseProcessor;
+}();
+
+function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * Default API Exception
+ */
+var DefaultApiException =
+
+/**
+ * Constructor.
+ *
+ * @param {ProcessedResponse} response - Processed response from server.
+ */
+function DefaultApiException(response) {
+  _classCallCheck$2(this, DefaultApiException);
+
+  this.response = response;
+};
+
 exports.JSON_FORMAT = JSON_FORMAT;
 exports.FORM_DATA_FORMAT = FORM_DATA_FORMAT;
-exports.defaultResponseProcessor = responseProcessor;
 exports.Api = Api;
+exports.defaultResponseProcessor = responseProcessor;
+exports.DefaultResponseProcessor = DefaultResponseProcessor;
+exports.DefaultApiException = DefaultApiException;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

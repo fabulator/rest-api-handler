@@ -2,7 +2,7 @@
 import resolveProcessors from './resolveProcessors';
 import { JSON_FORMAT, FORM_DATA_FORMAT } from './dataFormats';
 import type { Format } from './dataFormats';
-import type { Processor } from './resolveProcessors';
+import type { ProcessorAdapter } from './resolveProcessors';
 
 type MethodType = 'GET' | 'POST' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PUT' | 'PATCH' | 'TRACE';
 
@@ -13,13 +13,11 @@ class Api {
     apiUrl: string;
     defaultHeaders: SimpleObject;
     defaultOptions: SimpleObject;
-    processors: Array<Processor>;
-
-    getDefaultHeaders: () => SimpleObject;
+    processors: Array<ProcessorAdapter>;
 
     constructor(
         apiUrl: string,
-        processors: Array<Processor> = [],
+        processors: Array<ProcessorAdapter> = [],
         defaultHeaders: SimpleObject = {},
         defaultOptions: SimpleObject = {},
     ): void {

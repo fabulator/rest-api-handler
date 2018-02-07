@@ -7,6 +7,12 @@ export type ApiResponseType<Respond> = {
 
 export type ProcessedResponse = ApiResponseType<Object | string>;
 
+/**
+ * Decode API body response.
+ *
+ * @param {Response} response - Native response.
+ * @returns {Object | string} Decoded json or simple string.
+ */
 function decodeResponse(response: Response): Promise<Object | string> {
     if (response.headers.get('content-type').indexOf('application/json') !== -1) {
         return response.json();
@@ -15,6 +21,12 @@ function decodeResponse(response: Response): Promise<Object | string> {
     return response.text();
 }
 
+/**
+ * Process response from API.
+ *
+ * @param {Response} response - Native response.
+ * @returns {Promise<ProcessedResponse>} Processed response from API.
+ */
 export default (response: Response): Promise<ProcessedResponse> => {
     return decodeResponse(response)
         .then((decodedResponse: Object | string) => {

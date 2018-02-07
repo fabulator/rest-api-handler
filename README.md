@@ -131,3 +131,25 @@ api.get('v1/btc/main').then((response) => {
     console.log(response.data);
 });
 ```
+
+## Exception handling
+
+When you catch exception from fetch it might be tricky. It can be response from api or some javascript syntax error. You can create exception throwing. Use example or your own methods:
+
+```javascript
+import { Api, DefaultResponseProcessor, DefaultApiException } from 'rest-api-handler';
+
+const api = new Api(apiUrl, [
+    new DefaultResponseProcessor(DefaultApiException),
+]);
+
+api
+    .get('some-namespace')
+    .catch((exception) => {
+        if (exception instanceof DefaultApiException) {
+            console.log('Api throwed some exception. Do something.');
+        };
+        console.log('There was some other exception');
+        throw exception;
+    });
+```
