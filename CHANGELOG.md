@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+
+## [1.1.1] 2018-02-08
+### Fixed
+- Fixed flow validation.
+
+
 ## [1.1.0] 2018-02-07
 ### Added
 - Add API exception handling.

@@ -29,21 +29,173 @@ function resolveArray(response, list) {
 var JSON_FORMAT = 'json';
 var FORM_DATA_FORMAT = 'formdata';
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var asyncGenerator = function () {
+  function AwaitValue(value) {
+    this.value = value;
+  }
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+  function AsyncGenerator(gen) {
+    var front, back;
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+    function send(key, arg) {
+      return new Promise(function (resolve, reject) {
+        var request = {
+          key: key,
+          arg: arg,
+          resolve: resolve,
+          reject: reject,
+          next: null
+        };
 
-// for some reason this does not work in flow yet
+        if (back) {
+          back = back.next = request;
+        } else {
+          front = back = request;
+          resume(key, arg);
+        }
+      });
+    }
+
+    function resume(key, arg) {
+      try {
+        var result = gen[key](arg);
+        var value = result.value;
+
+        if (value instanceof AwaitValue) {
+          Promise.resolve(value.value).then(function (arg) {
+            resume("next", arg);
+          }, function (arg) {
+            resume("throw", arg);
+          });
+        } else {
+          settle(result.done ? "return" : "normal", result.value);
+        }
+      } catch (err) {
+        settle("throw", err);
+      }
+    }
+
+    function settle(type, value) {
+      switch (type) {
+        case "return":
+          front.resolve({
+            value: value,
+            done: true
+          });
+          break;
+
+        case "throw":
+          front.reject(value);
+          break;
+
+        default:
+          front.resolve({
+            value: value,
+            done: false
+          });
+          break;
+      }
+
+      front = front.next;
+
+      if (front) {
+        resume(front.key, front.arg);
+      } else {
+        back = null;
+      }
+    }
+
+    this._invoke = send;
+
+    if (typeof gen.return !== "function") {
+      this.return = undefined;
+    }
+  }
+
+  if (typeof Symbol === "function" && Symbol.asyncIterator) {
+    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
+      return this;
+    };
+  }
+
+  AsyncGenerator.prototype.next = function (arg) {
+    return this._invoke("next", arg);
+  };
+
+  AsyncGenerator.prototype.throw = function (arg) {
+    return this._invoke("throw", arg);
+  };
+
+  AsyncGenerator.prototype.return = function (arg) {
+    return this._invoke("return", arg);
+  };
+
+  return {
+    wrap: function (fn) {
+      return function () {
+        return new AsyncGenerator(fn.apply(this, arguments));
+      };
+    },
+    await: function (value) {
+      return new AwaitValue(value);
+    }
+  };
+}();
+
+
+
+
+
+var classCallCheck = function (instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+};
+
+var createClass = function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+}();
+
+
+
+
+
+
+
+var _extends = Object.assign || function (target) {
+  for (var i = 1; i < arguments.length; i++) {
+    var source = arguments[i];
+
+    for (var key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        target[key] = source[key];
+      }
+    }
+  }
+
+  return target;
+};
 
 var Api = function () {
     function Api(apiUrl) {
         var processors = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
         var defaultHeaders = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
         var defaultOptions = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
-
-        _classCallCheck(this, Api);
+        classCallCheck(this, Api);
 
         this.apiUrl = apiUrl;
         this.defaultHeaders = defaultHeaders;
@@ -54,13 +206,13 @@ var Api = function () {
     /**
      * Convert data object to fetch format.
      *
-     * @param {SimpleObject} data - data to convert
+     * @param {Object} data - data to convert
      * @param {Format} to - Format to which convert the data
      * @returns {string | FormData} converted data
      */
 
 
-    _createClass(Api, [{
+    createClass(Api, [{
         key: 'setDefaultHeaders',
 
 
@@ -116,8 +268,8 @@ var Api = function () {
          * @param {string} namespace - api endpoint
          * @param {MethodType} method - request method
          * @param {Object} options - fetch options
-         * @param {SimpleObject} headers - custom headers
-         * @returns {Promise<mixed>} processed response
+         * @param {Object} headers - custom headers
+         * @returns {Promise<any>} processed response
          */
 
     }, {
@@ -142,13 +294,13 @@ var Api = function () {
          * Send a GET request.
          *
          * @param {string} namespace - api endpoint
-         * @param {SimpleObject} parameters - get parameters
-         * @returns {Promise<mixed>} processed response
+         * @param {Object} parameters - get parameters
+         * @returns {Promise<any>} processed response
          */
 
     }, {
         key: 'get',
-        value: function get(namespace) {
+        value: function get$$1(namespace) {
             var parameters = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
             return this.request('' + namespace + Api.convertParametersToUrl(parameters), 'GET');
@@ -158,16 +310,16 @@ var Api = function () {
          * Send a POST request.
          *
          * @param {string} namespace - api endpoint
-         * @param {SimpleObject} data - body JSON parameters
+         * @param {Object} data - body JSON parameters
          * @param {?Format} format - format of body request
-         * @returns {Promise<mixed>} processed response
+         * @returns {Promise<any>} processed response
          */
 
     }, {
         key: 'post',
         value: function post(namespace) {
             var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-            var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : JSON_FORMAT;
+            var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Api.FORMATS.JSON_FORMAT;
 
             return this.request(namespace, 'POST', {
                 body: Api.convertData(data, format)
@@ -178,16 +330,16 @@ var Api = function () {
          * Send a PUT request.
          *
          * @param {string} namespace - api endpoint
-         * @param {SimpleObject} data - body JSON parameters
+         * @param {Object} data - body JSON parameters
          * @param {?Format} format - format of body request
-         * @returns {Promise<mixed>} processed response
+         * @returns {Promise<any>} processed response
          */
 
     }, {
         key: 'put',
         value: function put(namespace) {
             var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-            var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : JSON_FORMAT;
+            var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Api.FORMATS.JSON_FORMAT;
 
             return this.request(namespace, 'PUT', {
                 body: Api.convertData(data, format)
@@ -198,7 +350,7 @@ var Api = function () {
          * Send a DELETE request.
          *
          * @param {string} namespace - api endpoint
-         * @returns {Promise<mixed>} processed response
+         * @returns {Promise<any>} processed response
          */
 
     }, {
@@ -209,7 +361,7 @@ var Api = function () {
     }], [{
         key: 'convertData',
         value: function convertData(data) {
-            var to = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : JSON_FORMAT;
+            var to = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : Api.FORMATS.JSON_FORMAT;
 
             if (to === FORM_DATA_FORMAT) {
                 var formData = new FormData();
@@ -226,7 +378,7 @@ var Api = function () {
         /**
          * Convert parameters to url parameters string.
          *
-         * @param {SimpleObject} parameters - list of parameters
+         * @param {Object} parameters - list of parameters
          * @returns {string} encoded string
          */
 
@@ -245,9 +397,13 @@ var Api = function () {
             }).join('&');
         }
     }]);
-
     return Api;
 }();
+
+Api.FORMATS = {
+    JSON_FORMAT: JSON_FORMAT,
+    FORM_DATA_FORMAT: FORM_DATA_FORMAT
+};
 
 /**
  * Decode API body response.
@@ -288,10 +444,6 @@ var responseProcessor = (function (response) {
     });
 });
 
-var _createClass$1 = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 /**
  * Processor provider that process response from API and throw custom Exception.
  */
@@ -303,7 +455,7 @@ var DefaultResponseProcessor = function () {
      * @param {any} Exception - Exception class that will be throwed if request fails.
      */
     function DefaultResponseProcessor(Exception) {
-        _classCallCheck$1(this, DefaultResponseProcessor);
+        classCallCheck(this, DefaultResponseProcessor);
 
         this.Exception = Exception;
         this.processResponse = this.processResponse.bind(this);
@@ -317,7 +469,7 @@ var DefaultResponseProcessor = function () {
      */
 
 
-    _createClass$1(DefaultResponseProcessor, [{
+    createClass(DefaultResponseProcessor, [{
         key: 'processResponse',
         value: function processResponse(response) {
             var _this = this;
@@ -331,11 +483,8 @@ var DefaultResponseProcessor = function () {
             });
         }
     }]);
-
     return DefaultResponseProcessor;
 }();
-
-function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Default API Exception
@@ -348,7 +497,7 @@ var DefaultApiException =
  * @param {ProcessedResponse} response - Processed response from server.
  */
 function DefaultApiException(response) {
-  _classCallCheck$2(this, DefaultApiException);
+  classCallCheck(this, DefaultApiException);
 
   this.response = response;
 };

@@ -1,15 +1,14 @@
 {
   "name": "rest-api-handler",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Handler for REST APIs",
   "main": "dist/rest-api-handler.js",
   "jsnext:main": "dist/rest-api-handler.es.js",
   "module": "dist/rest-api-handler.es.js",
   "scripts": {
-    "js-lint": "node node_modules/eslint/bin/eslint.js --ext .jsx --ext .js ./src",
-    "js-lint-export": "node node_modules/eslint/bin/eslint.js --ext .jsx --ext .js ./src -o ./test_results/checkstyle/js-checkstyle.xml -f checkstyle",
+    "js-lint": "node node_modules/eslint/bin/eslint.js --ext .js ./src",
+    "js-lint-export": "npm run js-lint -- -o ./test_results/checkstyle/js-checkstyle.xml -f checkstyle",
     "flow": "node node_modules/flow-bin/vendor/flow",
-    "flow-generate": "node node_modules/flow-bin/vendor/flow gen-flow-files ./src/index.js > ./src/index.js.flow",
     "flow-coverage": "node node_modules/flow-coverage-report/bin/flow-coverage-report.js -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o test_results/coverage/flow",
     "test": "node node_modules/karma/bin/karma start karma.conf.js",
     "build": "node node_modules/rollup/bin/rollup --config ./rollup.config.js",
@@ -24,7 +23,9 @@
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.0",
+    "babel-plugin-external-helpers": "^6.22.0",
     "babel-plugin-istanbul": "^4.1.5",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-flow": "^6.23.0",

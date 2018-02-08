@@ -31,6 +31,7 @@ module.exports = (config) => {
                 ],
                 plugins: [
                     'istanbul',
+                    'transform-class-properties',
                     'transform-object-rest-spread',
                 ],
             },
