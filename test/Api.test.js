@@ -6,12 +6,13 @@ import {
     DefaultResponseProcessor,
     DefaultApiException,
 } from './../src';
+import type { ProcessedResponse } from './../src/responseProcessor';
 
 const apiUrl = 'http://api-endpoint.dev';
 const headers = new Headers({});
 
 describe('Api service testing', () => {
-    let api: Api = new Api(apiUrl, [
+    let api: Api<ProcessedResponse> = new Api(apiUrl, [
         defaultResponseProcessor,
     ]);
 

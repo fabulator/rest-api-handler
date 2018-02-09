@@ -1,7 +1,12 @@
 [ignore]
-package.json
+.*package.json
+.*rollup.config.js
+.*.flowconfig
+.*karma.conf.js
 .*build/**.*
+.*flow-typed/**.*
 .*test_results/**.*
+.*dist/**.*
 .*dev/**.*
 .*node_modules/**.*
 

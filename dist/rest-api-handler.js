@@ -7,7 +7,7 @@
 /**
  * Resolve given processor.
  *
- * @param {any} response - Response to process.
+ * @param {Input} response - Response to process.
  * @param {Array<ProcessorAdapter>} list - Array of processors.
  * @param {number} i - Index of current processor.
  * @returns {any} Processed response
@@ -18,7 +18,7 @@ function resolveArray(response, list) {
     var processor = list[i];
 
     if (!processor) {
-        return response;
+        return Promise.resolve(response);
     }
 
     return (typeof processor === 'function' ? processor(response) : processor.processResponse(response)).then(function (processedResponse) {
@@ -275,7 +275,7 @@ var Api = function () {
          * @param {MethodType} method - request method
          * @param {Object} options - fetch options
          * @param {Object} headers - custom headers
-         * @returns {Promise<any>} processed response
+         * @returns {Promise<ProcessedResponse>} processed response
          */
 
     }, {
@@ -301,7 +301,7 @@ var Api = function () {
          *
          * @param {string} namespace - api endpoint
          * @param {Object} parameters - get parameters
-         * @returns {Promise<any>} processed response
+         * @returns {Promise<ProcessedResponse>} processed response
          */
 
     }, {
@@ -318,7 +318,7 @@ var Api = function () {
          * @param {string} namespace - api endpoint
          * @param {Object} data - body JSON parameters
          * @param {?Format} format - format of body request
-         * @returns {Promise<any>} processed response
+         * @returns {Promise<ProcessedResponse>} processed response
          */
 
     }, {
@@ -338,7 +338,7 @@ var Api = function () {
          * @param {string} namespace - api endpoint
          * @param {Object} data - body JSON parameters
          * @param {?Format} format - format of body request
-         * @returns {Promise<any>} processed response
+         * @returns {Promise<ProcessedResponse>} processed response
          */
 
     }, {
@@ -356,7 +356,7 @@ var Api = function () {
          * Send a DELETE request.
          *
          * @param {string} namespace - api endpoint
-         * @returns {Promise<any>} processed response
+         * @returns {Promise<ProcessedResponse>} processed response
          */
 
     }, {
@@ -458,7 +458,7 @@ var DefaultResponseProcessor = function () {
     /**
      * Constructor.
      *
-     * @param {any} Exception - Exception class that will be throwed if request fails.
+     * @param {Class<Error>} Exception - Exception class that will be throwed if request fails.
      */
     function DefaultResponseProcessor(Exception) {
         classCallCheck(this, DefaultResponseProcessor);

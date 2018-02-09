@@ -6,14 +6,15 @@ import type { ProcessorAdapter } from './resolveProcessors';
 
 type MethodType = 'GET' | 'POST' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PUT' | 'PATCH' | 'TRACE';
 
-type SimpleObject = {[string]: string};
-
-class Api {
+class Api<ProcessedResponse> {
     apiUrl: string;
-    defaultHeaders: SimpleObject;
+    defaultHeaders: Object;
     defaultOptions: Object;
     processors: Array<ProcessorAdapter>;
-    getDefaultHeaders: () => SimpleObject;
+    getDefaultHeaders: () => Object;
+    setDefaultHeaders: (headers: Object) => void;
+    setDefaultHeader: (name: string, value: string) => void;
+    removeDefaultHeader: (name: string) => void;
 
     static FORMATS = {
         JSON_FORMAT,
@@ -23,7 +24,7 @@ class Api {
     constructor(
         apiUrl: string,
         processors: Array<ProcessorAdapter> = [],
-        defaultHeaders: SimpleObject = {},
+        defaultHeaders: Object = {},
         defaultOptions: Object = {},
     ): void {
         this.apiUrl = apiUrl;
@@ -76,7 +77,7 @@ class Api {
      *
      * @param {Headers} headers - http headers
      */
-    setDefaultHeaders(headers: SimpleObject): void {
+    setDefaultHeaders(headers: Object): void {
         this.defaultHeaders = headers;
     }
 
@@ -104,7 +105,7 @@ class Api {
      *
      * @returns {Headers} - default headers for all requests
      */
-    getDefaultHeaders(): SimpleObject {
+    getDefaultHeaders(): Object {
         return this.defaultHeaders;
     }
 
@@ -115,13 +116,13 @@ class Api {
      * @param {MethodType} method - request method
      * @param {Object} options - fetch options
      * @param {Object} headers - custom headers
-     * @returns {Promise<any>} processed response
+     * @returns {Promise<ProcessedResponse>} processed response
      */
     request(
         namespace: string,
         method: MethodType,
         options: Object = {},
-        headers: Object = {}): Promise<any> {
+        headers: Object = {}): Promise<ProcessedResponse> {
         const fetched: Promise<Response> = fetch(new Request(`${this.apiUrl}/${namespace}`, {
             ...this.defaultOptions,
             method,
@@ -132,7 +133,10 @@ class Api {
             ...options,
         }));
 
-        return fetched.then((response: Response) => resolveProcessors(response, this.processors));
+        return fetched
+            .then((response: Response) => {
+                return resolveProcessors(response, this.processors);
+            });
     }
 
     /**
@@ -140,9 +144,9 @@ class Api {
      *
      * @param {string} namespace - api endpoint
      * @param {Object} parameters - get parameters
-     * @returns {Promise<any>} processed response
+     * @returns {Promise<ProcessedResponse>} processed response
      */
-    get(namespace: string, parameters: Object = {}): Promise<any> {
+    get(namespace: string, parameters: Object = {}): Promise<ProcessedResponse> {
         return this.request(`${namespace}${Api.convertParametersToUrl(parameters)}`, 'GET');
     }
 
@@ -152,9 +156,9 @@ class Api {
      * @param {string} namespace - api endpoint
      * @param {Object} data - body JSON parameters
      * @param {?Format} format - format of body request
-     * @returns {Promise<any>} processed response
+     * @returns {Promise<ProcessedResponse>} processed response
      */
-    post(namespace: string, data: Object = {}, format: ?Format = Api.FORMATS.JSON_FORMAT): Promise<any> {
+    post(namespace: string, data: Object = {}, format: ?Format = Api.FORMATS.JSON_FORMAT): Promise<ProcessedResponse> {
         return this.request(namespace, 'POST', {
             body: Api.convertData(data, format),
         });
@@ -166,9 +170,9 @@ class Api {
      * @param {string} namespace - api endpoint
      * @param {Object} data - body JSON parameters
      * @param {?Format} format - format of body request
-     * @returns {Promise<any>} processed response
+     * @returns {Promise<ProcessedResponse>} processed response
      */
-    put(namespace: string, data: Object = {}, format: ?Format = Api.FORMATS.JSON_FORMAT): Promise<any> {
+    put(namespace: string, data: Object = {}, format: ?Format = Api.FORMATS.JSON_FORMAT): Promise<ProcessedResponse> {
         return this.request(namespace, 'PUT', {
             body: Api.convertData(data, format),
         });
@@ -178,9 +182,9 @@ class Api {
      * Send a DELETE request.
      *
      * @param {string} namespace - api endpoint
-     * @returns {Promise<any>} processed response
+     * @returns {Promise<ProcessedResponse>} processed response
      */
-    delete(namespace: string): Promise<any> {
+    delete(namespace: string): Promise<ProcessedResponse> {
         return this.request(namespace, 'DELETE');
     }
 }

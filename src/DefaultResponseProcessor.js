@@ -6,15 +6,15 @@ import type { ProcessedResponse } from './responseProcessor';
  * Processor provider that process response from API and throw custom Exception.
  */
 class DefaultResponseProcessor {
-    Exception: any;
+    Exception: Class<*>;
     processResponse: (response: Response) => Promise<ProcessedResponse>;
 
     /**
      * Constructor.
      *
-     * @param {any} Exception - Exception class that will be throwed if request fails.
+     * @param {Class<Error>} Exception - Exception class that will be throwed if request fails.
      */
-    constructor(Exception: any) {
+    constructor(Exception: Class<*>) {
         this.Exception = Exception;
         this.processResponse = this.processResponse.bind(this);
     }

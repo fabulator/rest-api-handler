@@ -188,7 +188,7 @@ var DefaultResponseProcessor = function () {
     /**
      * Constructor.
      *
-     * @param {any} Exception - Exception class that will be throwed if request fails.
+     * @param {Class<Error>} Exception - Exception class that will be throwed if request fails.
      */
     function DefaultResponseProcessor(Exception) {
         classCallCheck(this, DefaultResponseProcessor);
