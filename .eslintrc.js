@@ -5,6 +5,7 @@ module.exports = {
     settings: {
         polyfills: [
             'fetch',
+            'promises',
         ],
     },
     root: true,

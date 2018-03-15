@@ -33,6 +33,22 @@ describe('Response processor testing', () => {
         }).catch(error => error);
     });
 
+    it('should decode blob response', (done) => {
+        const response = new Response(new Blob(['xyz']), {
+            headers: new Headers({
+                'content-type': 'other',
+            }),
+            status: 200,
+            body: '',
+        });
+
+        defaultResponseProcessor(response).then((processedResponse) => {
+            expect(processedResponse.data instanceof Blob).toEqual(true);
+            done();
+            return processedResponse;
+        }).catch(error => error);
+    });
+
     it('should decode response and throw error base on status', (done) => {
         const response = new Response(new Blob([JSON.stringify({ a: 'b' })]), {
             headers: new Headers({

@@ -20,4 +20,4 @@ flow-typed/jasmine.js.flow
 module.file_ext=.js
 
 [version]
-0.64.0
+0.67.1

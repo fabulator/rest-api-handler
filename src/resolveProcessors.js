@@ -15,7 +15,11 @@ export type ProcessorAdapter = ProcessorFunction | {
  * @param {number} i - Index of current processor.
  * @returns {any} Processed response
  */
-export default function resolveArray<Input, Processors: Array<ProcessorAdapter>>(response: Input, list: Processors, i: number = 0): Promise<any> {
+export default function resolveArray<Input, Processors: Array<ProcessorAdapter>>(
+    response: Input,
+    list: Processors,
+    i: number = 0,
+): Promise<any> {
     const processor: ?ProcessorAdapter = list[i];
 
     if (!processor) {

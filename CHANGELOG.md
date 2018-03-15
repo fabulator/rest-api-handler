@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.2.0] 2018-03-15
+### Changed
+- Better response decoding. If content type is not json or text, blob will be returned.
+
+
 ## [1.1.1] 2018-02-08
 ### Fixed
 - Fixed flow validation.
