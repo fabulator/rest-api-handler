@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.3.0] 2018-03-19
+### Changed
+- Update flow version to 68
+- Add request info to exceptions
+
+
 ## [1.2.0] 2018-03-15
 ### Changed
 - Better response decoding. If content type is not json or text, blob will be returned.

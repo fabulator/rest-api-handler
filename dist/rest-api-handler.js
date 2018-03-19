@@ -9,11 +9,12 @@
  *
  * @param {Input} response - Response to process.
  * @param {Array<ProcessorAdapter>} list - Array of processors.
+ * @param {Request} request - fetch request
  * @param {number} i - Index of current processor.
  * @returns {any} Processed response
  */
-function resolveArray(response, list) {
-    var i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+function resolveArray(response, list, request) {
+    var i = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
     var processor = list[i];
 
@@ -21,9 +22,9 @@ function resolveArray(response, list) {
         return Promise.resolve(response);
     }
 
-    return (typeof processor === 'function' ? processor(response) : processor.processResponse(response)).then(function (processedResponse) {
+    return (typeof processor === 'function' ? processor(response) : processor.processResponse(response, request)).then(function (processedResponse) {
         if (list[i + 1]) {
-            return resolveArray(processedResponse, list, i + 1);
+            return resolveArray(processedResponse, list, request, i + 1);
         }
 
         return processedResponse;
@@ -196,6 +197,42 @@ var _extends = Object.assign || function (target) {
   return target;
 };
 
+
+
+var inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+
+
+
+
+
+
+
+
+
+
+var possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
+
 var Api = function () {
     function Api(apiUrl) {
         var processors = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
@@ -286,13 +323,13 @@ var Api = function () {
             var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
             var headers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-            var fetched = fetch(new Request(this.apiUrl + '/' + namespace, _extends({}, this.defaultOptions, {
+            var request = new Request(this.apiUrl + '/' + namespace, _extends({}, this.defaultOptions, {
                 method: method,
                 headers: new Headers(_extends({}, this.getDefaultHeaders(), headers))
-            }, options)));
+            }, options));
 
-            return fetched.then(function (response) {
-                return resolveArray(response, _this.processors);
+            return fetch(request).then(function (response) {
+                return resolveArray(response, _this.processors, request);
             });
         }
 
@@ -465,7 +502,7 @@ var DefaultResponseProcessor = function () {
     /**
      * Constructor.
      *
-     * @param {Class<Error>} Exception - Exception class that will be throwed if request fails.
+     * @param {Class<ApiExceptionInterface>} Exception - Exception class that will be throwed if request fails.
      */
     function DefaultResponseProcessor(Exception) {
         classCallCheck(this, DefaultResponseProcessor);
@@ -478,18 +515,19 @@ var DefaultResponseProcessor = function () {
      * Process response from API.
      *
      * @param {Response} response - Native fetch response
+     * @param {Request} request - Native fetch request
      * @returns {Promise<ProcessedResponse>} Processed response.
      */
 
 
     createClass(DefaultResponseProcessor, [{
         key: 'processResponse',
-        value: function processResponse(response) {
+        value: function processResponse(response, request) {
             var _this = this;
 
             return responseProcessor(response).catch(function (exception) {
                 if (exception.data && exception.status && exception.source) {
-                    throw new _this.Exception(exception);
+                    throw new _this.Exception(exception, request);
                 }
 
                 throw exception;
@@ -502,18 +540,32 @@ var DefaultResponseProcessor = function () {
 /**
  * Default API Exception
  */
-var DefaultApiException =
+var DefaultApiException = function (_Error) {
+    inherits(DefaultApiException, _Error);
 
-/**
- * Constructor.
- *
- * @param {ProcessedResponse} response - Processed response from server.
- */
-function DefaultApiException(response) {
-  classCallCheck(this, DefaultApiException);
+    /**
+     * Constructor.
+     *
+     * @param {ProcessedResponse} response - Processed response from server.
+     * @param {Request} request - fetch Request.
+     */
+    function DefaultApiException(response, request) {
+        classCallCheck(this, DefaultApiException);
 
-  this.response = response;
-};
+        var _this = possibleConstructorReturn(this, (DefaultApiException.__proto__ || Object.getPrototypeOf(DefaultApiException)).call(this, 'Api error'));
+
+        _this.response = response;
+        _this.request = request;
+
+        // babel bug - https://github.com/babel/babel/issues/4485
+        _this.constructor = DefaultApiException;
+        // eslint-disable-next-line no-proto
+        _this.__proto__ = DefaultApiException.prototype;
+        return _this;
+    }
+
+    return DefaultApiException;
+}(Error);
 
 exports.JSON_FORMAT = JSON_FORMAT;
 exports.FORM_DATA_FORMAT = FORM_DATA_FORMAT;

@@ -195,7 +195,7 @@ var DefaultResponseProcessor = function () {
     /**
      * Constructor.
      *
-     * @param {Class<Error>} Exception - Exception class that will be throwed if request fails.
+     * @param {Class<ApiExceptionInterface>} Exception - Exception class that will be throwed if request fails.
      */
     function DefaultResponseProcessor(Exception) {
         classCallCheck(this, DefaultResponseProcessor);
@@ -208,18 +208,19 @@ var DefaultResponseProcessor = function () {
      * Process response from API.
      *
      * @param {Response} response - Native fetch response
+     * @param {Request} request - Native fetch request
      * @returns {Promise<ProcessedResponse>} Processed response.
      */
 
 
     createClass(DefaultResponseProcessor, [{
         key: 'processResponse',
-        value: function processResponse(response) {
+        value: function processResponse(response, request) {
             var _this = this;
 
             return responseProcessor(response).catch(function (exception) {
                 if (exception.data && exception.status && exception.source) {
-                    throw new _this.Exception(exception);
+                    throw new _this.Exception(exception, request);
                 }
 
                 throw exception;

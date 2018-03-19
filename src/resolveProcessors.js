@@ -4,7 +4,7 @@ type ProcessorFunction = (response: any) => Promise<any>;
 
 // processor can be function or instance of class
 export type ProcessorAdapter = ProcessorFunction | {
-    processResponse: ProcessorFunction,
+    processResponse: (response: any, request: Request) => Promise<any>,
 };
 
 /**
@@ -12,12 +12,14 @@ export type ProcessorAdapter = ProcessorFunction | {
  *
  * @param {Input} response - Response to process.
  * @param {Array<ProcessorAdapter>} list - Array of processors.
+ * @param {Request} request - fetch request
  * @param {number} i - Index of current processor.
  * @returns {any} Processed response
  */
 export default function resolveArray<Input, Processors: Array<ProcessorAdapter>>(
     response: Input,
     list: Processors,
+    request: Request,
     i: number = 0,
 ): Promise<any> {
     const processor: ?ProcessorAdapter = list[i];
@@ -26,10 +28,10 @@ export default function resolveArray<Input, Processors: Array<ProcessorAdapter>>
         return Promise.resolve(response);
     }
 
-    return (typeof processor === 'function' ? processor(response) : processor.processResponse(response))
-        .then((processedResponse: any) => {
+    return (typeof processor === 'function' ? processor(response) : processor.processResponse(response, request))
+        .then((processedResponse: *) => {
             if (list[i + 1]) {
-                return resolveArray(processedResponse, list, i + 1);
+                return resolveArray(processedResponse, list, request, i + 1);
             }
 
             return processedResponse;

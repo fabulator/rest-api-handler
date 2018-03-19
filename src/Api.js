@@ -123,7 +123,7 @@ class Api<ProcessedResponse> {
         method: MethodType,
         options: Object = {},
         headers: Object = {}): Promise<ProcessedResponse> {
-        const fetched: Promise<Response> = fetch(new Request(`${this.apiUrl}/${namespace}`, {
+        const request = new Request(`${this.apiUrl}/${namespace}`, {
             ...this.defaultOptions,
             method,
             headers: new Headers({
@@ -131,11 +131,11 @@ class Api<ProcessedResponse> {
                 ...headers,
             }),
             ...options,
-        }));
+        });
 
-        return fetched
+        return fetch(request)
             .then((response: Response) => {
-                return resolveProcessors(response, this.processors);
+                return resolveProcessors(response, this.processors, request);
             });
     }
 
