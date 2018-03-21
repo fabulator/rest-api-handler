@@ -29,17 +29,17 @@ const baseSettings = {
     },
 };
 
-fs.copyFile('./src/index.js', 'dist/rest-api-handler.js.flow', () => {});
+fs.copyFile('./src/index.js', 'dist/index.js.flow', () => {});
 
 export default [
     Object.assign({}, baseSettings, {
         input: './src/index.js',
         output: [
             {
-                file: 'dist/rest-api-handler.es.js',
+                file: 'dist/index.es.js',
                 format: 'es',
             }, {
-                file: 'dist/rest-api-handler.js',
+                file: 'dist/index.js',
                 format: 'umd',
                 name: 'apiHandler',
             },
@@ -52,8 +52,8 @@ export default [
         'DefaultApiException',
         'resolveProcessors',
         'dataFormats',
-        'dataFormats',
         'responseProcessor',
+        'ApiExceptionInterface',
     ].map((file) => {
         return Object.assign({}, baseSettings, {
             input: `./src/${file}.js`,

@@ -170,6 +170,8 @@ var possibleConstructorReturn = function (self, call) {
 /**
  * Default API Exception
  */
+
+/* eslint-disable no-proto */
 var DefaultApiException = function (_Error) {
     inherits(DefaultApiException, _Error);
 
@@ -188,8 +190,9 @@ var DefaultApiException = function (_Error) {
         _this.request = request;
 
         // babel bug - https://github.com/babel/babel/issues/4485
+        // $FlowFixMe
         _this.constructor = DefaultApiException;
-        // eslint-disable-next-line no-proto
+        // $FlowFixMe
         _this.__proto__ = DefaultApiException.prototype;
         return _this;
     }

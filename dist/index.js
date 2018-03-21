@@ -1,3 +1,9 @@
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.apiHandler = {})));
+}(this, (function (exports) { 'use strict';
+
 /**
  * Resolve given processor.
  *
@@ -534,6 +540,8 @@ var DefaultResponseProcessor = function () {
 /**
  * Default API Exception
  */
+
+/* eslint-disable no-proto */
 var DefaultApiException = function (_Error) {
     inherits(DefaultApiException, _Error);
 
@@ -552,8 +560,9 @@ var DefaultApiException = function (_Error) {
         _this.request = request;
 
         // babel bug - https://github.com/babel/babel/issues/4485
+        // $FlowFixMe
         _this.constructor = DefaultApiException;
-        // eslint-disable-next-line no-proto
+        // $FlowFixMe
         _this.__proto__ = DefaultApiException.prototype;
         return _this;
     }
@@ -561,4 +570,13 @@ var DefaultApiException = function (_Error) {
     return DefaultApiException;
 }(Error);
 
-export { JSON_FORMAT, FORM_DATA_FORMAT, Api, responseProcessor as defaultResponseProcessor, DefaultResponseProcessor, DefaultApiException };
+exports.JSON_FORMAT = JSON_FORMAT;
+exports.FORM_DATA_FORMAT = FORM_DATA_FORMAT;
+exports.Api = Api;
+exports.defaultResponseProcessor = responseProcessor;
+exports.DefaultResponseProcessor = DefaultResponseProcessor;
+exports.DefaultApiException = DefaultApiException;
+
+Object.defineProperty(exports, '__esModule', { value: true });
+
+})));

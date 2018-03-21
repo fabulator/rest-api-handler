@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.3.1] 2018-03-21
+### Fixed
+- Fix flow definitions
+- Change building strategy and improve compatibility with fetch definitions.
+
+
 ## [1.3.0] 2018-03-19
 ### Changed
 - Update flow version to 68

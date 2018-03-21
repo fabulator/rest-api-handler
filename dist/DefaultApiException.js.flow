@@ -1,4 +1,5 @@
 // @flow
+/* eslint-disable no-proto */
 import type { ProcessedResponse } from './responseProcessor';
 import type { ApiExceptionInterface } from './ApiExceptionInterface';
 
@@ -21,8 +22,9 @@ class DefaultApiException extends Error implements ApiExceptionInterface {
         this.request = request;
 
         // babel bug - https://github.com/babel/babel/issues/4485
+        // $FlowFixMe
         this.constructor = DefaultApiException;
-        // eslint-disable-next-line no-proto
+        // $FlowFixMe
         this.__proto__ = DefaultApiException.prototype;
     }
 }
