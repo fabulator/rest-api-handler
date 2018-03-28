@@ -268,7 +268,7 @@ var Api = function () {
         /**
          * Request given API endpoint.
          *
-         * @param {string} namespace - api endpoint
+         * @param {string} namespace - api endpoint or full url
          * @param {MethodType} method - request method
          * @param {Object} options - fetch options
          * @param {Object} headers - custom headers

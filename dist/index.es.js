@@ -312,7 +312,7 @@ var Api = function () {
         /**
          * Request given API endpoint.
          *
-         * @param {string} namespace - api endpoint
+         * @param {string} namespace - api endpoint or full url
          * @param {MethodType} method - request method
          * @param {Object} options - fetch options
          * @param {Object} headers - custom headers
@@ -481,7 +481,7 @@ function decodeResponse(response) {
  * @returns {Promise<ProcessedResponse>} Processed response from API.
  */
 
-var responseProcessor = (function (response) {
+function responseProcessor(response) {
     return decodeResponse(response).then(function (decodedResponse) {
         // create custom response format
         var toRespond = {
@@ -498,7 +498,7 @@ var responseProcessor = (function (response) {
         // otherwise create an error
         throw toRespond;
     });
-});
+}
 
 /**
  * Processor provider that process response from API and throw custom Exception.

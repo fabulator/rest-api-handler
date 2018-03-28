@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.4.1] 2018-03-28
+### Changed
+- Add name to exported function responseProcessor
+
+
 ## [1.4.0] 2018-03-28
 ### Changed
 - Use better node polyfill for documentation

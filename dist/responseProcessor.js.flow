@@ -35,7 +35,7 @@ function decodeResponse(response: Response): Promise<DecodedStream> {
  * @param {Response} response - Native response.
  * @returns {Promise<ProcessedResponse>} Processed response from API.
  */
-export default (response: Response): Promise<ProcessedResponse> => {
+export default function responseProcessor(response: Response): Promise<ProcessedResponse> {
     return decodeResponse(response)
         .then((decodedResponse: DecodedStream) => {
             // create custom response format

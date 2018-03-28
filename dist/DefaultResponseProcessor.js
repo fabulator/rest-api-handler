@@ -27,7 +27,7 @@ function decodeResponse(response) {
  * @returns {Promise<ProcessedResponse>} Processed response from API.
  */
 
-var responseProcessor = (function (response) {
+function responseProcessor(response) {
     return decodeResponse(response).then(function (decodedResponse) {
         // create custom response format
         var toRespond = {
@@ -44,7 +44,7 @@ var responseProcessor = (function (response) {
         // otherwise create an error
         throw toRespond;
     });
-});
+}
 
 var asyncGenerator = function () {
   function AwaitValue(value) {
