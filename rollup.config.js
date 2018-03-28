@@ -12,6 +12,7 @@ const baseSettings = {
                         modules: false,
                         targets: {
                             browsers: packpage.browserslist,
+                            node: '9.6.1',
                         },
                     },
                 ],
@@ -19,6 +20,11 @@ const baseSettings = {
             ],
             plugins: [
                 'external-helpers',
+                [
+                    'transform-builtin-classes', {
+                        globals: ['Error'],
+                    },
+                ],
                 'transform-class-properties',
                 'transform-object-rest-spread',
             ],

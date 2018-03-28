@@ -283,7 +283,9 @@ var Api = function () {
             var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
             var headers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-            var request = new Request(this.apiUrl + '/' + namespace, _extends({}, this.defaultOptions, {
+            var urlToRequest = namespace.indexOf('http') === 0 ? namespace : this.apiUrl + '/' + namespace;
+
+            var request = new Request(urlToRequest, _extends({}, this.defaultOptions, {
                 method: method,
                 headers: new Headers(_extends({}, this.getDefaultHeaders(), headers))
             }, options));

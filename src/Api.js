@@ -112,7 +112,7 @@ class Api<ProcessedResponse> {
     /**
      * Request given API endpoint.
      *
-     * @param {string} namespace - api endpoint
+     * @param {string} namespace - api endpoint or full url
      * @param {MethodType} method - request method
      * @param {Object} options - fetch options
      * @param {Object} headers - custom headers
@@ -123,7 +123,9 @@ class Api<ProcessedResponse> {
         method: MethodType,
         options: Object = {},
         headers: Object = {}): Promise<ProcessedResponse> {
-        const request = new Request(`${this.apiUrl}/${namespace}`, {
+        const urlToRequest = namespace.indexOf('http') === 0 ? namespace : `${this.apiUrl}/${namespace}`;
+
+        const request = new Request(urlToRequest, {
             ...this.defaultOptions,
             method,
             headers: new Headers({

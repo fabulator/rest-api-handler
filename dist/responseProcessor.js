@@ -13,7 +13,7 @@ function decodeResponse(response) {
         return response.json();
     }
 
-    if (contentType.indexOf('text') >= 0) {
+    if (contentType.indexOf('text') >= 0 || contentType.indexOf('xml') >= 0) {
         return response.text();
     }
 
@@ -36,8 +36,8 @@ var responseProcessor = (function (response) {
             source: response
         };
 
-        // resolve promise on 2xx answer
-        if (response.status >= 200 && response.status <= 299) {
+        // response ok means that response was successful (2xx)
+        if (response.ok) {
             return toRespond;
         }
 

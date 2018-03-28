@@ -24,6 +24,7 @@ module.exports = (config) => {
                         {
                             targets: {
                                 browsers: packpage.browserslist,
+                                node: '9.6.1',
                             },
                         },
                     ],

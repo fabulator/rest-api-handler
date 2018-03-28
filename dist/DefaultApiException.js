@@ -1,5 +1,15 @@
 'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+
+
+
+
 var asyncGenerator = function () {
   function AwaitValue(value) {
     this.value = value;
@@ -167,12 +177,36 @@ var possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
+var _fixBabelExtend = function (O) {
+    var gPO = O.getPrototypeOf || function (o) {
+        return o.__proto__;
+    },
+        sPO = O.setPrototypeOf || function (o, p) {
+        o.__proto__ = p;
+        return o;
+    },
+        construct = (typeof Reflect === 'undefined' ? 'undefined' : _typeof(Reflect)) === 'object' ? Reflect.construct : function (Parent, args, Class) {
+        var Constructor,
+            a = [null];
+        a.push.apply(a, args);
+        Constructor = Parent.bind.apply(Parent, a);
+        return sPO(new Constructor(), Class.prototype);
+    };
+
+    return function fixBabelExtend(Class) {
+        var Parent = gPO(Class);
+        return sPO(Class, sPO(function Super() {
+            return construct(Parent, arguments, gPO(this).constructor);
+        }, Parent));
+    };
+}(Object);
+
 /**
  * Default API Exception
  */
 
 /* eslint-disable no-proto */
-var DefaultApiException = function (_Error) {
+var DefaultApiException = _fixBabelExtend(function (_Error) {
     inherits(DefaultApiException, _Error);
 
     /**
@@ -184,20 +218,18 @@ var DefaultApiException = function (_Error) {
     function DefaultApiException(response, request) {
         classCallCheck(this, DefaultApiException);
 
-        var _this = possibleConstructorReturn(this, (DefaultApiException.__proto__ || Object.getPrototypeOf(DefaultApiException)).call(this, 'Api error'));
+        var _this = possibleConstructorReturn(this, (DefaultApiException.__proto__ || Object.getPrototypeOf(DefaultApiException)).call(this, 'Api exception: ' + JSON.stringify(response.data)));
 
         _this.response = response;
         _this.request = request;
 
         // babel bug - https://github.com/babel/babel/issues/4485
         // $FlowFixMe
-        _this.constructor = DefaultApiException;
-        // $FlowFixMe
         _this.__proto__ = DefaultApiException.prototype;
         return _this;
     }
 
     return DefaultApiException;
-}(Error);
+}(Error));
 
 module.exports = DefaultApiException;

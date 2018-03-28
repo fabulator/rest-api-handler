@@ -36,6 +36,16 @@ function resolveArray(response, list, request) {
 var JSON_FORMAT = 'json';
 var FORM_DATA_FORMAT = 'formdata';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+
+
+
+
 var asyncGenerator = function () {
   function AwaitValue(value) {
     this.value = value;
@@ -323,7 +333,9 @@ var Api = function () {
             var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
             var headers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
 
-            var request = new Request(this.apiUrl + '/' + namespace, _extends({}, this.defaultOptions, {
+            var urlToRequest = namespace.indexOf('http') === 0 ? namespace : this.apiUrl + '/' + namespace;
+
+            var request = new Request(urlToRequest, _extends({}, this.defaultOptions, {
                 method: method,
                 headers: new Headers(_extends({}, this.getDefaultHeaders(), headers))
             }, options));
@@ -461,7 +473,7 @@ function decodeResponse(response) {
         return response.json();
     }
 
-    if (contentType.indexOf('text') >= 0) {
+    if (contentType.indexOf('text') >= 0 || contentType.indexOf('xml') >= 0) {
         return response.text();
     }
 
@@ -484,8 +496,8 @@ var responseProcessor = (function (response) {
             source: response
         };
 
-        // resolve promise on 2xx answer
-        if (response.status >= 200 && response.status <= 299) {
+        // response ok means that response was successful (2xx)
+        if (response.ok) {
             return toRespond;
         }
 
@@ -537,12 +549,36 @@ var DefaultResponseProcessor = function () {
     return DefaultResponseProcessor;
 }();
 
+var _fixBabelExtend = function (O) {
+    var gPO = O.getPrototypeOf || function (o) {
+        return o.__proto__;
+    },
+        sPO = O.setPrototypeOf || function (o, p) {
+        o.__proto__ = p;
+        return o;
+    },
+        construct = (typeof Reflect === 'undefined' ? 'undefined' : _typeof(Reflect)) === 'object' ? Reflect.construct : function (Parent, args, Class) {
+        var Constructor,
+            a = [null];
+        a.push.apply(a, args);
+        Constructor = Parent.bind.apply(Parent, a);
+        return sPO(new Constructor(), Class.prototype);
+    };
+
+    return function fixBabelExtend(Class) {
+        var Parent = gPO(Class);
+        return sPO(Class, sPO(function Super() {
+            return construct(Parent, arguments, gPO(this).constructor);
+        }, Parent));
+    };
+}(Object);
+
 /**
  * Default API Exception
  */
 
 /* eslint-disable no-proto */
-var DefaultApiException = function (_Error) {
+var DefaultApiException = _fixBabelExtend(function (_Error) {
     inherits(DefaultApiException, _Error);
 
     /**
@@ -554,21 +590,19 @@ var DefaultApiException = function (_Error) {
     function DefaultApiException(response, request) {
         classCallCheck(this, DefaultApiException);
 
-        var _this = possibleConstructorReturn(this, (DefaultApiException.__proto__ || Object.getPrototypeOf(DefaultApiException)).call(this, 'Api error'));
+        var _this = possibleConstructorReturn(this, (DefaultApiException.__proto__ || Object.getPrototypeOf(DefaultApiException)).call(this, 'Api exception: ' + JSON.stringify(response.data)));
 
         _this.response = response;
         _this.request = request;
 
         // babel bug - https://github.com/babel/babel/issues/4485
         // $FlowFixMe
-        _this.constructor = DefaultApiException;
-        // $FlowFixMe
         _this.__proto__ = DefaultApiException.prototype;
         return _this;
     }
 
     return DefaultApiException;
-}(Error);
+}(Error));
 
 exports.JSON_FORMAT = JSON_FORMAT;
 exports.FORM_DATA_FORMAT = FORM_DATA_FORMAT;

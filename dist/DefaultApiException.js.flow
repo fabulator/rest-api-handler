@@ -17,13 +17,11 @@ class DefaultApiException extends Error implements ApiExceptionInterface {
      * @param {Request} request - fetch Request.
      */
     constructor(response: ProcessedResponse, request: Request) {
-        super('Api error');
+        super(`Api exception: ${JSON.stringify(response.data)}`);
         this.response = response;
         this.request = request;
 
         // babel bug - https://github.com/babel/babel/issues/4485
-        // $FlowFixMe
-        this.constructor = DefaultApiException;
         // $FlowFixMe
         this.__proto__ = DefaultApiException.prototype;
     }
