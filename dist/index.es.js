@@ -356,6 +356,23 @@ var Api = function () {
         }
 
         /**
+         * Send a request with body.
+         *
+         * @param {string} namespace - api endpoint
+         * @param {Object} data - body JSON parameters
+         * @param {Format} format - format of body request
+         * @returns {Promise<ProcessedResponse>} processed response
+         */
+
+    }, {
+        key: 'requestWithBody',
+        value: function requestWithBody(namespace, data, format) {
+            return this.request(namespace, 'POST', {
+                body: Api.convertData(data, format)
+            });
+        }
+
+        /**
          * Send a POST request.
          *
          * @param {string} namespace - api endpoint
@@ -370,9 +387,7 @@ var Api = function () {
             var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Api.FORMATS.JSON_FORMAT;
 
-            return this.request(namespace, 'POST', {
-                body: Api.convertData(data, format)
-            });
+            return this.requestWithBody(namespace, data, format);
         }
 
         /**
@@ -390,9 +405,7 @@ var Api = function () {
             var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Api.FORMATS.JSON_FORMAT;
 
-            return this.request(namespace, 'PUT', {
-                body: Api.convertData(data, format)
-            });
+            return this.requestWithBody(namespace, data, format);
         }
 
         /**

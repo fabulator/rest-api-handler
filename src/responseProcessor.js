@@ -53,4 +53,4 @@ export default function responseProcessor(response: Response): Promise<Processed
             // otherwise create an error
             throw toRespond;
         });
-};
+}

@@ -153,6 +153,20 @@ class Api<ProcessedResponse> {
     }
 
     /**
+     * Send a request with body.
+     *
+     * @param {string} namespace - api endpoint
+     * @param {Object} data - body JSON parameters
+     * @param {Format} format - format of body request
+     * @returns {Promise<ProcessedResponse>} processed response
+     */
+    requestWithBody(namespace: string, data: Object, format: Format): Promise<ProcessedResponse> {
+        return this.request(namespace, 'POST', {
+            body: Api.convertData(data, format),
+        });
+    }
+
+    /**
      * Send a POST request.
      *
      * @param {string} namespace - api endpoint
@@ -161,9 +175,7 @@ class Api<ProcessedResponse> {
      * @returns {Promise<ProcessedResponse>} processed response
      */
     post(namespace: string, data: Object = {}, format: ?Format = Api.FORMATS.JSON_FORMAT): Promise<ProcessedResponse> {
-        return this.request(namespace, 'POST', {
-            body: Api.convertData(data, format),
-        });
+        return this.requestWithBody(namespace, data, format);
     }
 
     /**
@@ -175,9 +187,7 @@ class Api<ProcessedResponse> {
      * @returns {Promise<ProcessedResponse>} processed response
      */
     put(namespace: string, data: Object = {}, format: ?Format = Api.FORMATS.JSON_FORMAT): Promise<ProcessedResponse> {
-        return this.request(namespace, 'PUT', {
-            body: Api.convertData(data, format),
-        });
+        return this.requestWithBody(namespace, data, format);
     }
 
     /**

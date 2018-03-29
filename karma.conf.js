@@ -1,6 +1,6 @@
 const packpage = require('./package.json');
 
-module.exports = (config) => {
+function configurator(config) {
     config.set({
         preprocessors: {
             'test/**/*.test.js': ['babel', 'commonjs'],
@@ -69,4 +69,6 @@ module.exports = (config) => {
         singleRun: true,
         concurrency: Infinity,
     });
-};
+}
+
+module.exports = configurator;
