@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Decode API body response.
  *
@@ -113,4 +111,4 @@ var DefaultResponseProcessor = function () {
     return DefaultResponseProcessor;
 }();
 
-module.exports = DefaultResponseProcessor;
+export default DefaultResponseProcessor;

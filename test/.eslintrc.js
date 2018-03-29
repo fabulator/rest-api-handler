@@ -1,5 +1,5 @@
 module.exports = {
     extends: [
-        'socifi/jasmine',
+        'socifi/jest',
     ],
 };

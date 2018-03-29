@@ -1,8 +1,6 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.apiHandler = {})));
-}(this, (function (exports) { 'use strict';
+'use strict';
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 /**
  * Resolve given processor.
@@ -35,133 +33,6 @@ function resolveArray(response, list, request) {
 
 var JSON_FORMAT = 'json';
 var FORM_DATA_FORMAT = 'formdata';
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
-  return typeof obj;
-} : function (obj) {
-  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
-};
-
-
-
-
-
-var asyncGenerator = function () {
-  function AwaitValue(value) {
-    this.value = value;
-  }
-
-  function AsyncGenerator(gen) {
-    var front, back;
-
-    function send(key, arg) {
-      return new Promise(function (resolve, reject) {
-        var request = {
-          key: key,
-          arg: arg,
-          resolve: resolve,
-          reject: reject,
-          next: null
-        };
-
-        if (back) {
-          back = back.next = request;
-        } else {
-          front = back = request;
-          resume(key, arg);
-        }
-      });
-    }
-
-    function resume(key, arg) {
-      try {
-        var result = gen[key](arg);
-        var value = result.value;
-
-        if (value instanceof AwaitValue) {
-          Promise.resolve(value.value).then(function (arg) {
-            resume("next", arg);
-          }, function (arg) {
-            resume("throw", arg);
-          });
-        } else {
-          settle(result.done ? "return" : "normal", result.value);
-        }
-      } catch (err) {
-        settle("throw", err);
-      }
-    }
-
-    function settle(type, value) {
-      switch (type) {
-        case "return":
-          front.resolve({
-            value: value,
-            done: true
-          });
-          break;
-
-        case "throw":
-          front.reject(value);
-          break;
-
-        default:
-          front.resolve({
-            value: value,
-            done: false
-          });
-          break;
-      }
-
-      front = front.next;
-
-      if (front) {
-        resume(front.key, front.arg);
-      } else {
-        back = null;
-      }
-    }
-
-    this._invoke = send;
-
-    if (typeof gen.return !== "function") {
-      this.return = undefined;
-    }
-  }
-
-  if (typeof Symbol === "function" && Symbol.asyncIterator) {
-    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
-      return this;
-    };
-  }
-
-  AsyncGenerator.prototype.next = function (arg) {
-    return this._invoke("next", arg);
-  };
-
-  AsyncGenerator.prototype.throw = function (arg) {
-    return this._invoke("throw", arg);
-  };
-
-  AsyncGenerator.prototype.return = function (arg) {
-    return this._invoke("return", arg);
-  };
-
-  return {
-    wrap: function (fn) {
-      return function () {
-        return new AsyncGenerator(fn.apply(this, arguments));
-      };
-    },
-    await: function (value) {
-      return new AwaitValue(value);
-    }
-  };
-}();
-
-
-
-
 
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -365,6 +236,7 @@ var Api = function () {
          * Send a request with body.
          *
          * @param {string} namespace - api endpoint
+         * @param {MethodType} method - api method
          * @param {Object} data - body JSON parameters
          * @param {Format} format - format of body request
          * @returns {Promise<ProcessedResponse>} processed response
@@ -372,8 +244,8 @@ var Api = function () {
 
     }, {
         key: 'requestWithBody',
-        value: function requestWithBody(namespace, data, format) {
-            return this.request(namespace, 'POST', {
+        value: function requestWithBody(namespace, method, data, format) {
+            return this.request(namespace, method, {
                 body: Api.convertData(data, format)
             });
         }
@@ -393,7 +265,7 @@ var Api = function () {
             var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Api.FORMATS.JSON_FORMAT;
 
-            return this.requestWithBody(namespace, data, format);
+            return this.requestWithBody(namespace, 'POST', data, format);
         }
 
         /**
@@ -411,7 +283,7 @@ var Api = function () {
             var data = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
             var format = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : Api.FORMATS.JSON_FORMAT;
 
-            return this.requestWithBody(namespace, data, format);
+            return this.requestWithBody(namespace, 'PUT', data, format);
         }
 
         /**
@@ -562,36 +434,12 @@ var DefaultResponseProcessor = function () {
     return DefaultResponseProcessor;
 }();
 
-var _fixBabelExtend = function (O) {
-    var gPO = O.getPrototypeOf || function (o) {
-        return o.__proto__;
-    },
-        sPO = O.setPrototypeOf || function (o, p) {
-        o.__proto__ = p;
-        return o;
-    },
-        construct = (typeof Reflect === 'undefined' ? 'undefined' : _typeof(Reflect)) === 'object' ? Reflect.construct : function (Parent, args, Class) {
-        var Constructor,
-            a = [null];
-        a.push.apply(a, args);
-        Constructor = Parent.bind.apply(Parent, a);
-        return sPO(new Constructor(), Class.prototype);
-    };
-
-    return function fixBabelExtend(Class) {
-        var Parent = gPO(Class);
-        return sPO(Class, sPO(function Super() {
-            return construct(Parent, arguments, gPO(this).constructor);
-        }, Parent));
-    };
-}(Object);
-
 /**
  * Default API Exception
  */
 
 /* eslint-disable no-proto */
-var DefaultApiException = _fixBabelExtend(function (_Error) {
+var DefaultApiException = function (_Error) {
     inherits(DefaultApiException, _Error);
 
     /**
@@ -615,7 +463,7 @@ var DefaultApiException = _fixBabelExtend(function (_Error) {
     }
 
     return DefaultApiException;
-}(Error));
+}(Error);
 
 exports.JSON_FORMAT = JSON_FORMAT;
 exports.FORM_DATA_FORMAT = FORM_DATA_FORMAT;
@@ -623,7 +471,3 @@ exports.Api = Api;
 exports.defaultResponseProcessor = responseProcessor;
 exports.DefaultResponseProcessor = DefaultResponseProcessor;
 exports.DefaultApiException = DefaultApiException;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));

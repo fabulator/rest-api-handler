@@ -1,4 +1,5 @@
 // @flow
+import 'cross-fetch/polyfill';
 import {
     Api,
     FORM_DATA_FORMAT,
@@ -7,6 +8,20 @@ import {
     DefaultApiException,
 } from './../src';
 import type { ProcessedResponse } from './../src/responseProcessor';
+
+class FormData {
+    data = {};
+
+    append(key, value) {
+        this.data[key] = value;
+    }
+
+    toString() {
+        return JSON.stringify(this.data);
+    }
+}
+
+global.FormData = FormData;
 
 const apiUrl = 'http://api-endpoint.dev';
 const headers = new Headers({});
@@ -18,6 +33,7 @@ describe('Api service testing', () => {
 
     describe('Test request', () => {
         beforeEach(() => {
+            // eslint-disable-next-line no-undef
             spyOn(window, 'fetch').and.callFake((request: Request) => {
                 return Promise.resolve(request);
             });
@@ -28,52 +44,40 @@ describe('Api service testing', () => {
             expect(Api.convertData({ a: 'b' })).toEqual(JSON.stringify({ a: 'b' }));
         });
 
-        it('should call request', () => {
-            api.request('some-namespace', 'GET').catch(error => error);
-            const request: Request = new Request(`${apiUrl}/some-namespace`, {
-                headers,
-            });
+        it('should call request', async () => {
+            const request = await api.request('some-namespace', 'GET');
 
-            expect(window.fetch).toHaveBeenCalledWith(request);
+            expect(request).toEqual(new Request(`${apiUrl}/some-namespace`, {
+                headers,
+            }));
         });
 
-        it('should call get request', () => {
-            api.get('some-namespace').catch(error => error);
-            const request: Request = new Request(`${apiUrl}/some-namespace`, {
-                headers,
-            });
+        it('should call request with full url', async () => {
+            const request = await api.request('http://google.com/', 'GET');
 
-            expect(window.fetch).toHaveBeenCalledWith(request);
+            expect(request.url).toEqual('http://google.com/');
         });
 
-        it('should call delete request', () => {
-            api.delete('some-namespace').catch(error => error);
-            const request: Request = new Request(`${apiUrl}/some-namespace`, {
-                headers,
-                method: 'Delete',
-            });
+        it('should call get request', async () => {
+            const request = await api.get('some-namespace');
 
-            expect(window.fetch).toHaveBeenCalledWith(request);
+            expect(request.method).toEqual('GET');
         });
 
-        it('should call get request with parameters', () => {
-            api.get('some-namespace', { a: 'b', b: 2 }).catch(error => error);
-            const request: Request = new Request(`${apiUrl}/some-namespace?a=b&b=2`, {
-                headers,
-            });
+        it('should call delete request', async () => {
+            const request = await api.delete('some-namespace');
 
-            expect(window.fetch).toHaveBeenCalledWith(request);
+            expect(request.method).toEqual('DELETE');
         });
 
-        it('should call post request', () => {
-            api.post('some-namespace', {}).catch(error => error);
-            const request: Request = new Request(`${apiUrl}/some-namespace`, {
-                headers,
-                method: 'POST',
-                body: JSON.stringify({}),
-            });
+        it('should call get request with parameters', async () => {
+            const request = await api.get('some-namespace', { a: 'b', b: 2 });
+            expect(request.url).toEqual(`${apiUrl}/some-namespace?a=b&b=2`);
+        });
 
-            expect(window.fetch).toHaveBeenCalledWith(request);
+        it('should call post request', async () => {
+            const request = await api.post('some-namespace');
+            expect(request.method).toEqual('POST');
         });
 
         it('should call post request without data', () => {
@@ -87,30 +91,25 @@ describe('Api service testing', () => {
             expect(window.fetch).toHaveBeenCalledWith(request);
         });
 
-        it('should call put request', () => {
-            api.put('some-namespace', { a: 'b', b: 2 }).catch(error => error);
-            const request: Request = new Request(`${apiUrl}/some-namespace`, {
-                headers,
-                method: 'PUT',
-                body: JSON.stringify({ a: 'b', b: 2 }),
-            });
-
-            expect(window.fetch).toHaveBeenCalledWith(request);
+        it('should call put request', async () => {
+            const request = await api.put('some-namespace');
+            expect(request.method).toEqual('PUT');
         });
 
-        it('should call put request without data', () => {
-            api.put('some-namespace').catch(error => error);
+        it('should call put request without data', async () => {
             const request: Request = new Request(`${apiUrl}/some-namespace`, {
                 headers,
                 method: 'PUT',
                 body: JSON.stringify({}),
             });
 
+            const apiRequest = await api.put('some-namespace');
+
+            expect(request.method).toEqual(apiRequest.method);
             expect(window.fetch).toHaveBeenCalledWith(request);
         });
 
-        it('should call put request with form data', () => {
-            api.put('some-namespace', { a: 'b', b: 2 }, FORM_DATA_FORMAT).catch(error => error);
+        it('should call put request with form data', async () => {
             const formdata = new FormData();
             formdata.append('a', 'b');
             formdata.append('b', '2');
@@ -120,7 +119,8 @@ describe('Api service testing', () => {
                 body: formdata,
             });
 
-            expect(window.fetch).toHaveBeenCalledWith(request);
+            const apiRequest = await api.put('some-namespace', { a: 'b', b: 2 }, FORM_DATA_FORMAT);
+            expect(request).toEqual(apiRequest);
         });
 
         it('should call post request with body', () => {
@@ -188,9 +188,9 @@ describe('Api service testing', () => {
                 .catch(error => error);
         });
 
-        it('throws ApiException on API error', (done) => {
+        it('throws ApiException on API error', async () => {
             const processor1 = () => {
-                return Promise.resolve(new Response(new Blob([JSON.stringify({ a: 'b' })]), {
+                return Promise.resolve(new Response(JSON.stringify({ a: 'b' }), {
                     headers: new Headers({
                         'content-type': 'application/json',
                     }),
@@ -203,16 +203,18 @@ describe('Api service testing', () => {
                 new DefaultResponseProcessor(DefaultApiException),
             ]);
 
-            api
-                .get('some-namespace')
-                .catch((exception) => {
-                    expect(exception instanceof DefaultApiException).toBeTruthy();
-                    done();
-                    throw exception;
-                });
+            let request;
+
+            try {
+                request = await api.get('some-namespace');
+            } catch (exception) {
+                expect(exception instanceof DefaultApiException).toBeTruthy();
+            }
+
+            expect(request).toBeUndefined();
         });
 
-        it('throws regular exception if it is not API error', (done) => {
+        it('throws regular exception if it is not API error', async () => {
             const processor1 = () => {
                 return Promise.resolve({ status: 500 });
             };
@@ -222,13 +224,15 @@ describe('Api service testing', () => {
                 new DefaultResponseProcessor(DefaultApiException),
             ]);
 
-            api
-                .get('some-namespace')
-                .catch((exception) => {
-                    expect(exception instanceof DefaultApiException).toBeFalsy();
-                    done();
-                    throw exception;
-                });
+            let request;
+
+            try {
+                request = await api.get('some-namespace');
+            } catch (exception) {
+                expect(exception instanceof DefaultApiException).toBeFalsy();
+            }
+
+            expect(request).toBeUndefined();
         });
     });
 });

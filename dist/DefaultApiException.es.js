@@ -1,5 +1,3 @@
-'use strict';
-
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -81,4 +79,4 @@ var DefaultApiException = function (_Error) {
     return DefaultApiException;
 }(Error);
 
-module.exports = DefaultApiException;
+export default DefaultApiException;

@@ -1,4 +1,4 @@
 /node_modules
 .idea
 /dev
-/test_results
+/tests_results

@@ -10,8 +10,9 @@
     "js-lint-export": "npm run js-lint -- -o ./test_results/checkstyle/js-checkstyle.xml -f checkstyle",
     "flow": "node node_modules/flow-bin/vendor/flow",
     "flow-coverage": "node node_modules/flow-coverage-report/bin/flow-coverage-report.js -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o test_results/coverage/flow",
-    "test": "node node_modules/karma/bin/karma start karma.conf.js",
-    "build": "node node_modules/rollup/bin/rollup --config ./rollup.config.js"
+    "test": "node ./node_modules/jest/bin/jest.js",
+    "build": "rm -rf ./dist && node node_modules/rollup/bin/rollup --config ./rollup.config.js",
+    "precommit": "npm run js-lint && npm run flow && npm run test && npm run build"
   },
   "repository": {
     "type": "git",
@@ -20,31 +21,12 @@
   "author": "Michal Ozogán",
   "license": "Apache License 2.0",
   "devDependencies": {
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.0",
-    "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-istanbul": "^4.1.5",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-builtin-classes": "^0.6.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-flow": "^6.23.0",
-    "codecov": "^2.3.0",
+    "cross-fetch": "^2.1.0",
     "eslint-config-socifi": "1.x",
     "flow-bin": "0.68.0",
     "flow-coverage-report": "^0.3.0",
-    "jasmine-core": "^2.5.2",
-    "karma": "^1.3.0",
-    "karma-babel-preprocessor": "^7.0.0",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-commonjs": "^1.0.0",
-    "karma-coverage": "^1.1.1",
-    "karma-jasmine": "^1.0.2",
-    "karma-junit-reporter": "^1.1.0",
-    "rollup": "^0.50.0",
-    "rollup-plugin-babel": "^3.0.2",
-    "rollup-plugin-uglify": "^2.0.1"
+    "socifi-jest-config": "^1.4.0",
+    "socifi-rollup-config": "^1.6.0"
   },
   "browserslist": [
     "> 1%",
