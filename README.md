@@ -96,7 +96,7 @@ api.post('file-upload', {
 
 ```
 
-## Authentization
+## Authentication
 
 You can authorize to API by using default headers or set them after.
 
