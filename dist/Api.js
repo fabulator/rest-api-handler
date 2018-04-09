@@ -149,6 +149,19 @@ var Api = function () {
         }
 
         /**
+         * Fetch API url.
+         *
+         * @param {Request} request - fetch request
+         * @returns {Promise<Response>} fetch response
+         */
+
+    }, {
+        key: 'fetchRequest',
+        value: function fetchRequest(request) {
+            return fetch(request);
+        }
+
+        /**
          * Request given API endpoint.
          *
          * @param {string} namespace - api endpoint or full url
@@ -173,7 +186,7 @@ var Api = function () {
                 headers: new Headers(_extends({}, this.getDefaultHeaders(), headers))
             }, options));
 
-            return fetch(request).then(function (response) {
+            return this.fetchRequest(request).then(function (response) {
                 return resolveArray(response, _this.processors, request);
             });
         }

@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.5.0] 2018-04-09
+### Added
+- Add new method fetchRequest that handles fetch API. It can be easily overrrided by children.
+
+
 ## [1.4.1] 2018-03-28
 ### Changed
 - Add name to exported function responseProcessor

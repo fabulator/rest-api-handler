@@ -4,7 +4,7 @@ import { JSON_FORMAT, FORM_DATA_FORMAT } from './dataFormats';
 import type { Format } from './dataFormats';
 import type { ProcessorAdapter } from './resolveProcessors';
 
-type MethodType = 'GET' | 'POST' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PUT' | 'PATCH' | 'TRACE';
+export type MethodType = 'GET' | 'POST' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PUT' | 'PATCH' | 'TRACE';
 
 class Api<ProcessedResponse> {
     apiUrl: string;
@@ -15,6 +15,7 @@ class Api<ProcessedResponse> {
     setDefaultHeaders: (headers: Object) => void;
     setDefaultHeader: (name: string, value: string) => void;
     removeDefaultHeader: (name: string) => void;
+    fetchRequest: (request: Request) => Promise<Response>;
 
     static FORMATS = {
         JSON_FORMAT,
@@ -110,6 +111,16 @@ class Api<ProcessedResponse> {
     }
 
     /**
+     * Fetch API url.
+     *
+     * @param {Request} request - fetch request
+     * @returns {Promise<Response>} fetch response
+     */
+    fetchRequest(request: Request): Promise<Response> {
+        return fetch(request);
+    }
+
+    /**
      * Request given API endpoint.
      *
      * @param {string} namespace - api endpoint or full url
@@ -136,7 +147,7 @@ class Api<ProcessedResponse> {
             ...options,
         });
 
-        return fetch(request)
+        return this.fetchRequest(request)
             .then((response: Response) => {
                 return resolveProcessors(response, this.processors, request);
             });
