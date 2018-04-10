@@ -23,8 +23,8 @@
   "devDependencies": {
     "cross-fetch": "^2.1.0",
     "eslint-config-socifi": "1.x",
-    "flow-bin": "0.68.0",
-    "flow-coverage-report": "^0.3.0",
+    "flow-bin": "0.69.0",
+    "flow-coverage-report": "^0.5.0",
     "socifi-jest-config": "^1.4.0",
     "socifi-rollup-config": "^1.6.0"
   },
