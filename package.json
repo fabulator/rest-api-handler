@@ -10,6 +10,7 @@
     "js-lint-export": "npm run js-lint -- -o ./test_results/checkstyle/js-checkstyle.xml -f checkstyle",
     "flow": "node node_modules/flow-bin/vendor/flow",
     "flow-coverage": "node node_modules/flow-coverage-report/bin/flow-coverage-report.js -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o test_results/coverage/flow",
+    "flow-init": "node node_modules/flow-typed/dist/cli.js install jest@22.x",
     "test": "node ./node_modules/jest/bin/jest.js",
     "build": "rm -rf ./dist && node node_modules/rollup/bin/rollup --config ./rollup.config.js",
     "precommit": "npm run js-lint && npm run flow && npm run test && npm run build"
@@ -22,9 +23,10 @@
   "license": "Apache License 2.0",
   "devDependencies": {
     "cross-fetch": "^2.1.0",
-    "eslint-config-socifi": "1.x",
+    "eslint-config-socifi": "^1.5.0",
     "flow-bin": "0.69.0",
     "flow-coverage-report": "^0.5.0",
+    "flow-typed": "^2.4.0",
     "socifi-jest-config": "^1.4.0",
     "socifi-rollup-config": "^1.6.0"
   },

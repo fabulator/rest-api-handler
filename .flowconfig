@@ -1,24 +1,21 @@
 [ignore]
-.*package.json
-.*rollup.config.js
-.*.flowconfig
-.*karma.conf.js
 .*build/**.*
-.*flow-typed/**.*
-.*test_results/**.*
+.*tests_results/**.*
 .*dist/**.*
 .*dev/**.*
 .*test/**.*
+.*package.json
+.*renovate.json
+.*package-lock.json
+.*rollup.config.js
+.*jest.config.js
 .*node_modules/**.*
 
 [include]
 
-
 [libs]
-flow-typed/jasmine.js.flow
 
 [options]
-module.file_ext=.js
 
 [version]
 0.69.0
