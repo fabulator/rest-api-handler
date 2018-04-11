@@ -7,13 +7,13 @@
   "module": "dist/index.es.js",
   "scripts": {
     "js-lint": "node node_modules/eslint/bin/eslint.js --ext .js ./src ./test",
-    "js-lint-export": "npm run js-lint -- -o ./test_results/checkstyle/js-checkstyle.xml -f checkstyle",
+    "js-lint-export": "npm run js-lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
     "flow": "node node_modules/flow-bin/vendor/flow",
-    "flow-coverage": "node node_modules/flow-coverage-report/bin/flow-coverage-report.js -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o test_results/coverage/flow",
+    "flow-coverage": "node node_modules/flow-coverage-report/bin/flow-coverage-report.js -f \"node node_modules/flow-bin/vendor/flow\" -i ./src/**/*.js* -t html -t text -t json -o tests_results/coverage/flow",
     "flow-init": "node node_modules/flow-typed/dist/cli.js install jest@22.x",
     "test": "node ./node_modules/jest/bin/jest.js",
     "build": "rm -rf ./dist && node node_modules/rollup/bin/rollup --config ./rollup.config.js",
-    "precommit": "npm run js-lint && npm run flow && npm run test && npm run build"
+    "prepr": "npm run js-lint && npm run flow && npm run flow-coverage && npm run test"
   },
   "repository": {
     "type": "git",
