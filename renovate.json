@@ -1,5 +1,13 @@
 {
   "extends": [
     "config:base"
-  ]
+  ],
+  "pinVersions": false,
+  "automerge": true,
+  "major": {
+    "automerge": false
+  },
+  "devDependencies": {
+    "automerge": true
+  }
 }
