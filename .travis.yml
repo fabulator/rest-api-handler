@@ -1,15 +1,17 @@
 language: node_js
 node_js:
     - 9
+before_install:
+  - npm i -g npm@latest
 install:
     - npm install
-    - npm install -g codecov
+    - npm install -g coveralls
 script:
     - npm run js-lint-export
     - npm run test
     - npm run flow
 after_success:
-  - codecov
+  - cat ./tests_results/coverage/lcov.info | coveralls
 sudo: required
 deploy:
   provider: npm
