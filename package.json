@@ -1,6 +1,6 @@
 {
   "name": "rest-api-handler",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Handler for REST APIs",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.es.js",
@@ -13,7 +13,8 @@
     "flow-init": "node node_modules/flow-typed/dist/cli.js install jest@22.x",
     "test": "node ./node_modules/jest/bin/jest.js",
     "build": "rm -rf ./dist && node node_modules/rollup/bin/rollup --config ./rollup.config.js",
-    "prepr": "npm run js-lint && npm run flow && npm run flow-coverage && npm run test"
+    "prepr": "npm run js-lint && npm run flow && npm run flow-coverage && npm run test",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
