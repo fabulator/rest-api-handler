@@ -16,7 +16,7 @@ export type ProcessorAdapter = ProcessorFunction | {
  * @param {number} i - Index of current processor.
  * @returns {any} Processed response
  */
-export default function resolveArray<Input, Processors: Array<ProcessorAdapter>>(
+export default function resolveProcessors<Input, Processors: Array<ProcessorAdapter>>(
     response: Input,
     list: Processors,
     request: Request,
@@ -31,7 +31,7 @@ export default function resolveArray<Input, Processors: Array<ProcessorAdapter>>
     return (typeof processor === 'function' ? processor(response) : processor.processResponse(response, request))
         .then((processedResponse: *) => {
             if (list[i + 1]) {
-                return resolveArray(processedResponse, list, request, i + 1);
+                return resolveProcessors(processedResponse, list, request, i + 1);
             }
 
             return processedResponse;

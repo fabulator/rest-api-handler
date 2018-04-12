@@ -1,6 +1,6 @@
 module.exports = {
     extends: [
-        'socifi',
+        '@socifi',
     ],
     settings: {
         polyfills: [
