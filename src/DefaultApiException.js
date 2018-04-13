@@ -7,14 +7,21 @@ import type { ApiExceptionInterface } from './ApiExceptionInterface';
  * Default API Exception
  */
 class DefaultApiException extends Error implements ApiExceptionInterface {
+    /**
+     * Response from server that throwed an error.
+     */
     response: ProcessedResponse;
+
+    /**
+     * Request that failed.
+     */
     request: Request;
 
     /**
      * Constructor.
      *
      * @param {ProcessedResponse} response - Processed response from server.
-     * @param {Request} request - fetch Request.
+     * @param {Request} request - Fetch Request.
      */
     constructor(response: ProcessedResponse, request: Request) {
         super(`Api exception: ${JSON.stringify(response.data)}`);

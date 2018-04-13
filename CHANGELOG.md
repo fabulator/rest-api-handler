@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.6.0] 2018-04-13
+### Added
+- Add docs generator
+
+### Changed
+- Update packages
+
+
 ## [1.5.0] 2018-04-09
 ### Added
 - Add new method fetchRequest that handles fetch API. It can be easily overrrided by its children.

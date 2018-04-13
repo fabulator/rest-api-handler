@@ -1,5 +1,7 @@
 // @flow
-
+/**
+ * @ignore
+ */
 type ProcessorFunction = (response: any) => Promise<any>;
 
 // processor can be function or instance of class
