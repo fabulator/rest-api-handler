@@ -45,6 +45,6 @@
     "test-dist": "npm run test -- --config jest.config.dist.js",
     "build": "rm -rf ./dist && rollup --config ./rollup.config.js",
     "test-all": "npm run js-lint && npm run flow && npm run flow-coverage && npm run test",
-    "prepublishOnly": "npm run test-dist && npm run build"
+    "prepublishOnly": "npm run build && npm run test-dist"
   }
 }
