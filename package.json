@@ -42,9 +42,9 @@
     "flow-init": "flow-typed install jest@22.x",
     "flow-coverage": "flow-coverage-report -f \"node node_modules/flow-bin/vendor/flow\" -i \"./src/**/*.js*\" -t html -t text -t json -o tests_results/coverage/flow",
     "test": "jest",
-    "test-dist": "npm run test -- --config jest.config.dist.js",
+    "test-build": "npm run test -- --config jest.config.build.js",
     "build": "rm -rf ./dist && rollup --config ./rollup.config.js",
     "test-all": "npm run js-lint && npm run flow && npm run flow-coverage && npm run test",
-    "prepublishOnly": "npm run build && npm run test-dist"
+    "prepublishOnly": "npm run build && npm run test-build"
   }
 }

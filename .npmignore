@@ -12,4 +12,4 @@ dev
 flow-typed
 tests_results
 .esdoc.json
-jest.config.dist.js
+jest.config.build.js
