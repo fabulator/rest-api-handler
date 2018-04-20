@@ -16,7 +16,12 @@ export type ProcessedResponse = ApiResponseType<DecodedStream>;
  * @returns {DecodedStream} Decoded json or simple string.
  */
 function decodeResponse(response: Response): Promise<DecodedStream> {
-    const contentType = response.headers.get('content-type');
+    const contentType: ?string = response.headers.get('content-type');
+
+    // on default decode response as text
+    if (!contentType) {
+        return response.text();
+    }
 
     if (contentType.indexOf('json') >= 0) {
         return response.json();

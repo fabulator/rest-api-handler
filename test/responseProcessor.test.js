@@ -5,6 +5,16 @@ import { defaultResponseProcessor } from './../src';
 describe('Response processor testing', () => {
     beforeEach(() => { });
 
+    it('should decode response without content type as teext', async () => {
+        const response = new Response('xyz', {
+            headers: new Headers({}),
+        });
+
+        const processedResponse = await defaultResponseProcessor(response);
+
+        expect(processedResponse.data).toEqual('xyz');
+    });
+
     it('should decode text response', async () => {
         const response = new Response('xyz', {
             headers: new Headers({

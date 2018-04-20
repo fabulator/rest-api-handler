@@ -1,6 +1,6 @@
 {
   "name": "rest-api-handler",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "Handler for REST APIs",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.es.js",
@@ -44,7 +44,7 @@
     "test": "jest",
     "test-build": "npm run test -- --config jest.config.build.js",
     "build": "rm -rf ./dist && rollup --config ./rollup.config.js",
-    "test-all": "npm run js-lint && npm run flow && npm run flow-coverage && npm run test",
+    "test-all": "npm run lint && npm run flow && npm run flow-coverage && npm run test",
     "prepublishOnly": "npm run build && npm run test-build"
   }
 }
