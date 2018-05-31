@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.7.0] 2018-05-31
+### Added
+- Add urldecode format for requests body
+
+
 ## [1.6.1] 2018-04-20
 ### Fixed
 - Decode response without content type as text.

@@ -1,6 +1,6 @@
 // @flow
 import resolveProcessors from './resolveProcessors';
-import { JSON_FORMAT, FORM_DATA_FORMAT } from './dataFormats';
+import { JSON_FORMAT, FORM_DATA_FORMAT, URL_ENCODED_FORMAT } from './dataFormats';
 import type { Format } from './dataFormats';
 import type { ProcessorAdapter } from './resolveProcessors';
 
@@ -44,6 +44,7 @@ class Api<ProcessedResponse> {
     static FORMATS = {
         JSON_FORMAT,
         FORM_DATA_FORMAT,
+        URL_ENCODED_FORMAT,
     };
 
     /**
@@ -77,7 +78,7 @@ class Api<ProcessedResponse> {
      * const body = Api.convertData({ a: 'b' }, Api.FORMATS.JSON_FORMAT);
      * // output is {"a":"b"}
      */
-    static convertData(data: Object, to: ?Format = Api.FORMATS.JSON_FORMAT): string | FormData {
+    static convertData(data: Object, to: ?Format = JSON_FORMAT): string | FormData {
         if (to === FORM_DATA_FORMAT) {
             const formData = new FormData();
             Object.keys(data).forEach((key) => {
@@ -85,6 +86,10 @@ class Api<ProcessedResponse> {
                 formData.append(key, typeof value === 'number' ? value.toString() : value);
             });
             return formData;
+        }
+
+        if (to === URL_ENCODED_FORMAT) {
+            return Api.convertParametersToUrl(data).slice(1);
         }
 
         return JSON.stringify(data);
@@ -242,7 +247,7 @@ class Api<ProcessedResponse> {
      * @param {?Format} format - Format of body request
      * @returns {Promise<ProcessedResponse>} Processed response
      */
-    post(namespace: string, data: Object = {}, format: Format = Api.FORMATS.JSON_FORMAT): Promise<ProcessedResponse> {
+    post(namespace: string, data: Object = {}, format: Format = JSON_FORMAT): Promise<ProcessedResponse> {
         return this.requestWithBody(namespace, 'POST', data, format);
     }
 
@@ -254,7 +259,7 @@ class Api<ProcessedResponse> {
      * @param {?Format} format - Format of body request
      * @returns {Promise<ProcessedResponse>} Processed response
      */
-    put(namespace: string, data: Object = {}, format: Format = Api.FORMATS.JSON_FORMAT): Promise<ProcessedResponse> {
+    put(namespace: string, data: Object = {}, format: Format = JSON_FORMAT): Promise<ProcessedResponse> {
         return this.requestWithBody(namespace, 'PUT', data, format);
     }
 

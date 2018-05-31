@@ -3,6 +3,7 @@ import 'cross-fetch/polyfill';
 import {
     Api,
     FORM_DATA_FORMAT,
+    URL_ENCODED_FORMAT,
     defaultResponseProcessor,
     DefaultResponseProcessor,
     DefaultApiException,
@@ -129,6 +130,17 @@ describe('Api service testing', () => {
                 headers,
                 method: 'POST',
                 body: JSON.stringify({ a: 'b' }),
+            });
+
+            expect(window.fetch).toHaveBeenCalledWith(request);
+        });
+
+        it('should call post request with body in url encoded format', () => {
+            api.post('some-namespace', { e: 'f' }, URL_ENCODED_FORMAT).catch(error => error);
+            const request: Request = new Request(`${apiUrl}/some-namespace`, {
+                headers,
+                method: 'POST',
+                body: 'e=f',
             });
 
             expect(window.fetch).toHaveBeenCalledWith(request);

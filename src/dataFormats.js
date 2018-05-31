@@ -16,4 +16,10 @@ export const JSON_FORMAT: 'json' = 'json';
  */
 export const FORM_DATA_FORMAT: 'formdata' = 'formdata';
 
-export type Format = typeof JSON_FORMAT | typeof FORM_DATA_FORMAT;
+/**
+ * @desc Url encoded data in body
+ * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST
+ */
+export const URL_ENCODED_FORMAT: 'urlencoded' = 'urlencoded';
+
+export type Format = typeof JSON_FORMAT | typeof FORM_DATA_FORMAT | typeof URL_ENCODED_FORMAT;
