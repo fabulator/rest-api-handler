@@ -9,7 +9,7 @@ export type MethodType = 'GET' | 'POST' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PUT' 
 /**
  * Class for handling responses and requests.
  */
-class Api<ProcessedResponse> {
+export default class Api<ProcessedResponse> {
     /**
      * Base api url
      */
@@ -215,12 +215,13 @@ class Api<ProcessedResponse> {
      * @param {MethodType} method - api method
      * @param {Object} data - body JSON parameters
      * @param {Format} format - format of body request
+     * @param {Object} headers - custom headers
      * @returns {Promise<ProcessedResponse>} processed response
      */
-    requestWithBody(namespace: string, method: MethodType, data: Object, format: Format): Promise<ProcessedResponse> {
+    requestWithBody(namespace: string, method: MethodType, data: Object, format: Format, headers: Object = {}): Promise<ProcessedResponse> {
         return this.request(namespace, method, {
             body: Api.convertData(data, format),
-        });
+        }, headers);
     }
 
     /**
@@ -228,6 +229,7 @@ class Api<ProcessedResponse> {
      *
      * @param {string} namespace - api endpoint
      * @param {Object} parameters - get parameters
+     * @param {Object} headers - custom headers
      * @returns {Promise<ProcessedResponse>} processed response
      *
      * @example
@@ -235,8 +237,8 @@ class Api<ProcessedResponse> {
      * // will call YOUR_URI/brand?id=5
      * console.log(data);
      */
-    get(namespace: string, parameters: Object = {}): Promise<ProcessedResponse> {
-        return this.request(`${namespace}${Api.convertParametersToUrl(parameters)}`, 'GET');
+    get(namespace: string, parameters: Object = {}, headers: Object = {}): Promise<ProcessedResponse> {
+        return this.request(`${namespace}${Api.convertParametersToUrl(parameters)}`, 'GET', {}, headers);
     }
 
     /**
@@ -245,10 +247,11 @@ class Api<ProcessedResponse> {
      * @param {string} namespace - Api endpoint
      * @param {Object} data - Request object
      * @param {?Format} format - Format of body request
+     * @param {Object} headers - custom headers
      * @returns {Promise<ProcessedResponse>} Processed response
      */
-    post(namespace: string, data: Object = {}, format: Format = JSON_FORMAT): Promise<ProcessedResponse> {
-        return this.requestWithBody(namespace, 'POST', data, format);
+    post(namespace: string, data: Object = {}, format: Format = JSON_FORMAT, headers: Object = {}): Promise<ProcessedResponse> {
+        return this.requestWithBody(namespace, 'POST', data, format, headers);
     }
 
     /**
@@ -257,21 +260,21 @@ class Api<ProcessedResponse> {
      * @param {string} namespace - Api endpoint
      * @param {Object} data - Request object
      * @param {?Format} format - Format of body request
+     * @param {Object} headers - custom headers
      * @returns {Promise<ProcessedResponse>} Processed response
      */
-    put(namespace: string, data: Object = {}, format: Format = JSON_FORMAT): Promise<ProcessedResponse> {
-        return this.requestWithBody(namespace, 'PUT', data, format);
+    put(namespace: string, data: Object = {}, format: Format = JSON_FORMAT, headers: Object = {}): Promise<ProcessedResponse> {
+        return this.requestWithBody(namespace, 'PUT', data, format, headers);
     }
 
     /**
      * Send a DELETE request.
      *
      * @param {string} namespace - Api endpoint
+     * @param {Object} headers - custom headers
      * @returns {Promise<ProcessedResponse>} Processed response
      */
-    delete(namespace: string): Promise<ProcessedResponse> {
-        return this.request(namespace, 'DELETE');
+    delete(namespace: string, headers: Object = {}): Promise<ProcessedResponse> {
+        return this.request(namespace, 'DELETE', {}, headers);
     }
 }
-
-export default Api;

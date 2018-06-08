@@ -76,9 +76,21 @@ describe('Api service testing', () => {
             expect(request.url).toEqual(`${apiUrl}/some-namespace?a=b&b=2`);
         });
 
+        it('should call get request with custom headers', async () => {
+            const request = await api.get('some-namespace', {}, {
+                test: 'head',
+            });
+            expect(request.headers.get('test')).toEqual('head');
+        });
+
         it('should call post request', async () => {
             const request = await api.post('some-namespace');
             expect(request.method).toEqual('POST');
+        });
+
+        it('should call request body request without custom headers', async () => {
+            const request = await api.requestWithBody('some-namespace', 'PUT', {}, Api.FORMATS.JSON_FORMAT);
+            expect(request.headers.get('a')).toEqual(null);
         });
 
         it('should call post request without data', () => {

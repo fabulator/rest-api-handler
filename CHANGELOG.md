@@ -2,6 +2,12 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.8.0] 2018-05-31
+### Added
+- Add option to define custom body decoder for DefaultResponseProcessor
+- Add option to get, post, put and delete request to define custom headers
+
+
 ## [1.7.0] 2018-05-31
 ### Added
 - Add urldecode format for requests body

@@ -4,10 +4,11 @@ export type ApiResponseType<Respond> = {
     status: number;
     source: Response;
 }
+export type BodyDecoder = (response: Response) => *;
 
 type DecodedStream = Blob | Object | string;
 
-export type ProcessedResponse = ApiResponseType<DecodedStream>;
+export type ProcessedResponse = ApiResponseType<*>;
 
 /**
  * Decode API body response.
@@ -15,7 +16,7 @@ export type ProcessedResponse = ApiResponseType<DecodedStream>;
  * @param {Response} response - Native response.
  * @returns {DecodedStream} Decoded json or simple string.
  */
-function decodeResponse(response: Response): Promise<DecodedStream> {
+export function decodeResponse(response: Response): Promise<DecodedStream> {
     const contentType: ?string = response.headers.get('content-type');
 
     // on default decode response as text
@@ -38,11 +39,12 @@ function decodeResponse(response: Response): Promise<DecodedStream> {
  * Process response from API.
  *
  * @param {Response} response - Native response.
+ * @param {BodyDecoder} decoder - Custom body decoder.
  * @returns {Promise<ProcessedResponse>} Processed response from API.
  */
-export default function responseProcessor(response: Response): Promise<ProcessedResponse> {
-    return decodeResponse(response)
-        .then((decodedResponse: DecodedStream) => {
+export default function responseProcessor(response: Response, decoder: BodyDecoder = decodeResponse): Promise<ProcessedResponse> {
+    return decoder(response)
+        .then((decodedResponse: *) => {
             // create custom response format
             const toRespond: ProcessedResponse = {
                 data: decodedResponse,

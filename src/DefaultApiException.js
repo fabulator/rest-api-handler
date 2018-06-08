@@ -6,7 +6,7 @@ import type { ApiExceptionInterface } from './ApiExceptionInterface';
 /**
  * Default API Exception
  */
-class DefaultApiException extends Error implements ApiExceptionInterface {
+export default class DefaultApiException extends Error implements ApiExceptionInterface {
     /**
      * Response from server that throwed an error.
      */
@@ -33,5 +33,3 @@ class DefaultApiException extends Error implements ApiExceptionInterface {
         this.__proto__ = DefaultApiException.prototype;
     }
 }
-
-export default DefaultApiException;
