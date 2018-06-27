@@ -114,7 +114,7 @@ export default class Api<ProcessedResponse> {
 
         return `?${keys.map((key: string) => {
             const value = parameters[key];
-            return `${key}=${encodeURI(typeof value === 'number' ? value.toString() : value)}`;
+            return `${key}=${encodeURIComponent(typeof value === 'number' ? value.toString() : value)}`;
         }).join('&')}`;
     }
 

@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 
 
+## [1.8.1] 2018-06-27
+### Fixed
+- Encoding of get parameters
+
+
 ## [1.8.0] 2018-05-31
 ### Added
 - Add option to define custom body decoder for DefaultResponseProcessor
