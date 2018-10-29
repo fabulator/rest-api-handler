@@ -22,7 +22,7 @@
   ],
   "devDependencies": {
     "@socifi/eslint-config": "^1.6.2",
-    "@socifi/jest-config": "^1.4.0",
+    "@socifi/jest-config": "^2.0.0",
     "@socifi/rollup-config": "^1.6.0",
     "cross-fetch": "^2.2.0",
     "flow-bin": "0.84.0",
