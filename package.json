@@ -21,7 +21,7 @@
     "fetch"
   ],
   "devDependencies": {
-    "@socifi/eslint-config": "^1.6.2",
+    "@socifi/eslint-config": "^2.0.0",
     "@socifi/jest-config": "^1.4.0",
     "@socifi/rollup-config": "^1.6.0",
     "cross-fetch": "^2.2.0",
