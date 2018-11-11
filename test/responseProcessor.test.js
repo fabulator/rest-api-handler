@@ -1,6 +1,6 @@
 // @flow
 import 'cross-fetch/polyfill';
-import { defaultResponseProcessor } from './../src';
+import { defaultResponseProcessor } from '../src';
 
 describe('Response processor testing', () => {
     beforeEach(() => { });

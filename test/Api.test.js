@@ -7,8 +7,8 @@ import {
     defaultResponseProcessor,
     DefaultResponseProcessor,
     DefaultApiException,
-} from './../src';
-import type { ProcessedResponse } from './../src/responseProcessor';
+} from '../src';
+import type { ProcessedResponse } from '../src/responseProcessor';
 
 class FormData {
     data = {};
