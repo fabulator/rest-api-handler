@@ -16,7 +16,7 @@ export default async function resolveProcessors<Input = any, Processors extends 
     response: Input,
     list: Processors,
     request: Request,
-    i: number = 0,
+    i = 0,
 ): Promise<any> {
     const processor: ProcessorAdapter | undefined = list[i];
 

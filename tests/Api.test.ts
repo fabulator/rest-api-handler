@@ -1,35 +1,31 @@
-// @flow
 import 'cross-fetch/polyfill';
 import {
     Api,
-    FORM_DATA_FORMAT,
-    URL_ENCODED_FORMAT,
-    defaultResponseProcessor,
     DefaultResponseProcessor,
     DefaultApiException,
 } from '../src';
-import type { ProcessedResponse } from '../src/responseProcessor';
 
 class FormData {
-    data = {};
+    public data: {[key: string]: string} = {};
 
-    append(key, value) {
+    public append(key: string, value: string) {
         this.data[key] = value;
     }
 
-    toString() {
+    public toString() {
         return JSON.stringify(this.data);
     }
 }
 
+// @ts-ignore
 global.FormData = FormData;
 
 const apiUrl = 'http://api-endpoint.dev';
 const headers = new Headers({});
 
 describe('Api service testing', () => {
-    let api: Api<ProcessedResponse> = new Api(apiUrl, [
-        defaultResponseProcessor,
+    let api: Api = new Api(apiUrl, [
+        new DefaultResponseProcessor(DefaultApiException),
     ]);
 
     describe('Test request', () => {
@@ -89,12 +85,12 @@ describe('Api service testing', () => {
         });
 
         it('should call request body request without custom headers', async () => {
-            const request = await api.requestWithBody('some-namespace', 'PUT', {}, Api.FORMATS.JSON_FORMAT);
+            const request = await api.requestWithBody('some-namespace', 'PUT', {}, Api.FORMATS.JSON);
             expect(request.headers.get('a')).toEqual(null);
         });
 
         it('should call post request without data', () => {
-            api.post('some-namespace').catch(error => error);
+            api.post('some-namespace');
             const request: Request = new Request(`${apiUrl}/some-namespace`, {
                 headers,
                 method: 'POST',
@@ -126,18 +122,19 @@ describe('Api service testing', () => {
             const formdata = new FormData();
             formdata.append('a', 'b');
             formdata.append('b', '2');
+            // @ts-ignore
             const request: Request = new Request(`${apiUrl}/some-namespace`, {
                 headers,
                 method: 'PUT',
                 body: formdata,
             });
 
-            const apiRequest = await api.put('some-namespace', { a: 'b', b: 2 }, FORM_DATA_FORMAT);
+            const apiRequest = await api.put('some-namespace', { a: 'b', b: '2' }, Api.FORMATS.FORM_DATA);
             expect(request).toEqual(apiRequest);
         });
 
         it('should call post request with body', () => {
-            api.post('some-namespace', { a: 'b' }).catch(error => error);
+            api.post('some-namespace', { a: 'b' });
             const request: Request = new Request(`${apiUrl}/some-namespace`, {
                 headers,
                 method: 'POST',
@@ -148,7 +145,7 @@ describe('Api service testing', () => {
         });
 
         it('should call post request with body in url encoded format', () => {
-            api.post('some-namespace', { e: 'f' }, URL_ENCODED_FORMAT).catch(error => error);
+            api.post('some-namespace', { e: 'f' }, Api.FORMATS.URL_ENCODED);
             const request: Request = new Request(`${apiUrl}/some-namespace`, {
                 headers,
                 method: 'POST',
@@ -171,36 +168,18 @@ describe('Api service testing', () => {
             expect(api.getDefaultHeaders()).toEqual({ c: 'd' });
         });
 
-        it('response should be processed through procesor', (done) => {
-            const processor = () => {
-                return Promise.resolve({ data: { changed: 'response' }, status: 200 });
-            };
-
-            api = new Api(apiUrl, [
-                processor,
-            ]);
-            api
-                .get('some-namespace')
-                .then((response) => {
-                    expect(response).toEqual({ data: { changed: 'response' }, status: 200 });
-                    done();
-                    return response;
-                })
-                .catch(error => error);
-        });
-
         it('response should be processed multiple procesors', (done) => {
-            const processor1 = () => {
+            const processor1 = (): Promise<any> => {
                 return Promise.resolve({ data: { changed: 'response' }, status: 200 });
             };
 
-            const processor2 = (response: Object) => {
+            const processor2 = (response: { data: any }): Promise<any> => {
                 return Promise.resolve(response.data);
             };
 
             api = new Api(apiUrl, [
-                processor1,
-                processor2,
+                { processResponse: processor1 },
+                { processResponse: processor2 },
             ]);
             api
                 .get('some-namespace')
@@ -208,12 +187,11 @@ describe('Api service testing', () => {
                     expect(response).toEqual({ changed: 'response' });
                     done();
                     return response;
-                })
-                .catch(error => error);
+                });
         });
 
         it('throws ApiException on API error', async () => {
-            const processor1 = () => {
+            const processor1 = (): Promise<any> => {
                 return Promise.resolve(new Response(JSON.stringify({ a: 'b' }), {
                     headers: new Headers({
                         'content-type': 'application/json',
@@ -223,7 +201,7 @@ describe('Api service testing', () => {
             };
 
             api = new Api(apiUrl, [
-                processor1,
+                { processResponse: processor1 },
                 new DefaultResponseProcessor(DefaultApiException),
             ]);
 
@@ -233,18 +211,19 @@ describe('Api service testing', () => {
                 request = await api.get('some-namespace');
             } catch (exception) {
                 expect(exception instanceof DefaultApiException).toBeTruthy();
+                expect(exception.getRequest() instanceof Request).toBeTruthy();
             }
 
             expect(request).toBeUndefined();
         });
 
         it('throws regular exception if it is not API error', async () => {
-            const processor1 = () => {
+            const processor1 = (): Promise<any> => {
                 return Promise.resolve({ status: 500 });
             };
 
             api = new Api(apiUrl, [
-                processor1,
+                { processResponse: processor1 },
                 new DefaultResponseProcessor(DefaultApiException),
             ]);
 

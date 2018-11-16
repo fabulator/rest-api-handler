@@ -3,10 +3,10 @@ import { ApiExceptionConstructor } from './DefaultApiException';
 export type BodyDecoder<Decoded> = (response: Response) => Promise<Decoded>;
 
 export type ApiResponseType<Respond = any> = {
-    data: Respond;
-    status: number;
-    source: Response;
-}
+    data: Respond,
+    status: number,
+    source: Response,
+};
 
 /**
  * Processor provider that process response from API and throw custom Exception.
@@ -22,7 +22,7 @@ export default class DefaultResponseProcessor<ResponseType = any> {
      * @param Exception - Exception class that will be throwed if request fails.
      * @param decoder - Define custom response body decoder.
      */
-    constructor(Exception: ApiExceptionConstructor<ResponseType>, decoder?: BodyDecoder<ResponseType>) {
+    public constructor(Exception: ApiExceptionConstructor<ResponseType>, decoder?: BodyDecoder<ResponseType>) {
         this.Exception = Exception;
         this.decoder = decoder || this.decodeResponse;
     }

@@ -1,8 +1,13 @@
 import Api from './Api';
-import DefaultResponseProcessor from './DefaultResponseProcessor';
-import DefaultApiException from './DefaultApiException';
+import DefaultResponseProcessor, { ApiResponseType as ApiResponseTypeSource } from './DefaultResponseProcessor';
+import DefaultApiException, {
+    ApiExceptionConstructor as ApiExceptionConstructorSource,
+    ApiExceptionInterface as ApiExceptionInterfaceSource,
+} from './DefaultApiException';
 
 export { Api, DefaultResponseProcessor, DefaultApiException };
 
-export { ApiExceptionConstructor, ApiExceptionInterface } from './DefaultApiException';
-export { ApiResponseType } from './DefaultResponseProcessor';
+// piggy way how to reexport with babel
+export type ApiResponseType<A> = ApiResponseTypeSource<A>;
+export type ApiExceptionConstructor<A> = ApiExceptionConstructorSource<A>;
+export type ApiExceptionInterface<A> = ApiExceptionInterfaceSource<A>;

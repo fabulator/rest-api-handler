@@ -1,7 +1,8 @@
+/* eslint-disable no-proto */
 import { ApiResponseType } from './DefaultResponseProcessor';
 
 export interface ApiExceptionConstructor<ResponseType> {
-    new (response: ApiResponseType<ResponseType>, request: Request): ApiExceptionInterface<ResponseType>;
+    new (response: ApiResponseType<ResponseType>, request: Request): ApiExceptionInterface<ResponseType>,
 }
 
 export interface ApiExceptionInterface<ResponseType> {
@@ -33,13 +34,17 @@ export default class DefaultApiException<ResponseType> extends Error implements 
         super(`Api exception: ${JSON.stringify(response.data)}`);
         this.response = response;
         this.request = request;
+
+        // babel bug - https://github.com/babel/babel/issues/4485
+        // @ts-ignore
+        this.__proto__ = DefaultApiException.prototype;
     }
 
-    getResponse() {
+    public getResponse() {
         return this.response;
     }
 
-    getRequest() {
+    public getRequest() {
         return this.request;
     }
 }

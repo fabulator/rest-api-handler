@@ -32,7 +32,7 @@ export default class Api<ProcessedResponse = any> {
     /**
      * List of formatter you can use to process content of body request.
      */
-    static FORMATS = FORMATS;
+    public static FORMATS = FORMATS;
 
     /**
      * Constructor.
@@ -42,7 +42,7 @@ export default class Api<ProcessedResponse = any> {
      * @param defaultHeaders - Base settings for Fetch Request
      * @param defaultOptions - List of processors that parse response from server.
      */
-    constructor(
+    public constructor(
         apiUrl: string,
         processors: Array<ProcessorAdapter> = [],
         defaultHeaders: HeadersParameters = {},
@@ -65,7 +65,7 @@ export default class Api<ProcessedResponse = any> {
      * const body = Api.convertData({ a: 'b' }, Api.FORMATS.JSON);
      * // output is {"a":"b"}
      */
-    static convertData(data: {[key: string]: any}, to: FORMATS.Format = FORMATS.JSON): string | FormData {
+    public static convertData(data: {[key: string]: any}, to: FORMATS.Format = FORMATS.JSON): string | FormData {
         if (to === FORMATS.FORM_DATA) {
             const formData = new FormData();
             Object.entries(data).forEach(([key, value]) => {
@@ -91,7 +91,7 @@ export default class Api<ProcessedResponse = any> {
      * const parameters = Api.convertData({ a: '%b%' });
      * // output is ?a=%25b%25
      */
-    static convertParametersToUrl(parameters: {[key: string]: any}): string {
+    public static convertParametersToUrl(parameters: {[key: string]: any}): string {
         const keys = Object.keys(parameters);
 
         if (keys.length === 0) {
@@ -108,7 +108,7 @@ export default class Api<ProcessedResponse = any> {
      *
      * @param headers - HTTP headers
      */
-    setDefaultHeaders(headers: HeadersParameters): void {
+    public setDefaultHeaders(headers: HeadersParameters): void {
         this.defaultHeaders = headers;
     }
 
@@ -120,7 +120,7 @@ export default class Api<ProcessedResponse = any> {
      * @example
      * api.setDefaultHeader('content-type', 'application/json');
      */
-    setDefaultHeader(name: string, value: string): void {
+    public setDefaultHeader(name: string, value: string): void {
         this.defaultHeaders[name] = value;
     }
 
@@ -129,7 +129,7 @@ export default class Api<ProcessedResponse = any> {
      *
      * @param name - Name of header
      */
-    removeDefaultHeader(name: string): void {
+    public removeDefaultHeader(name: string): void {
         delete this.defaultHeaders[name];
     }
 
@@ -138,7 +138,7 @@ export default class Api<ProcessedResponse = any> {
      *
      * @returns Get Default headers
      */
-    getDefaultHeaders(): HeadersParameters {
+    public getDefaultHeaders(): HeadersParameters {
         return this.defaultHeaders;
     }
 
@@ -149,7 +149,7 @@ export default class Api<ProcessedResponse = any> {
      * @param request - Fetch request
      * @returns Fetch response
      */
-    fetchRequest(request: Request): Promise<Response> {
+    protected fetchRequest(request: Request): Promise<Response> {
         return fetch(request);
     }
 
@@ -168,7 +168,7 @@ export default class Api<ProcessedResponse = any> {
      *
      * const { data } = await api.request('http://i-can-request-full-url.com/?a=b', 'GET')
      */
-    request(
+    public request(
         namespace: string,
         method: MethodType,
         options: RequestInit = {},
@@ -204,7 +204,13 @@ export default class Api<ProcessedResponse = any> {
      * @param headers - custom headers
      * @returns processed response
      */
-    requestWithBody(namespace: string, method: MethodType, data: Object, format: FORMATS.Format, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
+    public requestWithBody(
+        namespace: string,
+        method: MethodType,
+        data: Object,
+        format: FORMATS.Format,
+        headers: HeadersParameters = {},
+    ): Promise<ProcessedResponse> {
         return this.request(namespace, method, {
             body: Api.convertData(data, format),
         }, headers);
@@ -223,7 +229,7 @@ export default class Api<ProcessedResponse = any> {
      * // will call YOUR_URI/brand?id=5
      * console.log(data);
      */
-    get(namespace: string, parameters: Object = {}, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
+    public get(namespace: string, parameters: Object = {}, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
         return this.request(`${namespace}${Api.convertParametersToUrl(parameters)}`, 'GET', {}, headers);
     }
 
@@ -236,7 +242,12 @@ export default class Api<ProcessedResponse = any> {
      * @param headers - custom headers
      * @returns Processed response
      */
-    post(namespace: string, data: Object = {}, format: FORMATS.Format = FORMATS.JSON, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
+    public post(
+        namespace: string,
+        data: Object = {},
+        format: FORMATS.Format = FORMATS.JSON,
+        headers: HeadersParameters = {},
+    ): Promise<ProcessedResponse> {
         return this.requestWithBody(namespace, 'POST', data, format, headers);
     }
 
@@ -249,7 +260,12 @@ export default class Api<ProcessedResponse = any> {
      * @param headers - custom headers
      * @returns Processed response
      */
-    put(namespace: string, data: Object = {}, format: FORMATS.Format = FORMATS.JSON, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
+    public put(
+        namespace: string,
+        data: Object = {},
+        format: FORMATS.Format = FORMATS.JSON,
+        headers: HeadersParameters = {},
+    ): Promise<ProcessedResponse> {
         return this.requestWithBody(namespace, 'PUT', data, format, headers);
     }
 
@@ -260,7 +276,7 @@ export default class Api<ProcessedResponse = any> {
      * @param headers - custom headers
      * @returns Processed response
      */
-    delete(namespace: string, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
+    public delete(namespace: string, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
         return this.request(namespace, 'DELETE', {}, headers);
     }
 }

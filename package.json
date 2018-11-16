@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "jsnext:main": "dist/index.esm.js",
   "module": "dist/index.esm.js",
-  "typesnpm ": "dist/index.d.ts",
+  "types ": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/fabulator/rest-api-handler.git"
@@ -24,18 +24,18 @@
   "devDependencies": {
     "@socifi/babel-config": "^0.5.2",
     "@socifi/eslint-config": "^2.0.1",
-    "@socifi/jest-config": "^2.0.0",
+    "@socifi/jest-config": "^2.0.1",
     "@socifi/rollup-config": "^2.0.1",
     "cross-fetch": "^2.2.0"
   },
   "scripts": {
-    "lint": "eslint ./src ./test",
+    "lint": "eslint --ext .ts ./src ./tests",
     "lint-export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
     "tsc": "tsc",
     "test": "jest",
-    "test-build": "npm run test -- --config jest.config.build.js",
+    "test:build": "npm run test -- --config jest.config.build.js",
     "build": "rollup --config ./rollup.config.js",
-    "test-all": "npm run lint && npm run flow && npm run flow-coverage && npm run test",
+    "test:all": "npm run lint && npm run tsc && npm run test",
     "prepublishOnly": "npm run build && npm run test-build"
   }
 }

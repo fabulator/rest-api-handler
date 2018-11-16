@@ -1,16 +1,21 @@
-// @flow
 import 'cross-fetch/polyfill';
-import { defaultResponseProcessor } from '../src';
+import { DefaultResponseProcessor, DefaultApiException } from '../src';
 
 describe('Response processor testing', () => {
-    beforeEach(() => { });
+    let defaultResponseProcessor: DefaultResponseProcessor;
+    // @ts-ignore
+    const request = new Request({});
+
+    beforeEach(() => {
+        defaultResponseProcessor = new DefaultResponseProcessor(DefaultApiException);
+    });
 
     it('should decode response without content type as teext', async () => {
         const response = new Response('xyz', {
             headers: new Headers({}),
         });
 
-        const processedResponse = await defaultResponseProcessor(response);
+        const processedResponse = await defaultResponseProcessor.processResponse(response, request);
 
         expect(processedResponse.data).toEqual('xyz');
     });
@@ -22,7 +27,7 @@ describe('Response processor testing', () => {
             }),
         });
 
-        const processedResponse = await defaultResponseProcessor(response);
+        const processedResponse = await defaultResponseProcessor.processResponse(response, request);
 
         expect(processedResponse.data).toEqual('xyz');
     });
@@ -33,10 +38,9 @@ describe('Response processor testing', () => {
                 'content-type': 'application/json',
             }),
             status: 200,
-            body: '',
         });
 
-        const processedResponse = await defaultResponseProcessor(response);
+        const processedResponse = await defaultResponseProcessor.processResponse(response, request);
 
         expect(processedResponse.data).toEqual({ a: 'b' });
     });
@@ -47,10 +51,9 @@ describe('Response processor testing', () => {
                 'content-type': 'other',
             }),
             status: 200,
-            body: '',
         });
 
-        const processedResponse = await defaultResponseProcessor(response);
+        const processedResponse = await defaultResponseProcessor.processResponse(response, request);
 
         expect(processedResponse.data.toString()).toEqual('[object Blob]');
     });
@@ -65,9 +68,9 @@ describe('Response processor testing', () => {
 
         let processedResponse;
         try {
-            processedResponse = await defaultResponseProcessor(response);
+            processedResponse = await defaultResponseProcessor.processResponse(response, request);
         } catch (exception) {
-            expect(exception.data).toEqual({ a: 'b' });
+            expect(exception.getResponse().data).toEqual({ a: 'b' });
         }
 
         expect(processedResponse).toBeUndefined();
