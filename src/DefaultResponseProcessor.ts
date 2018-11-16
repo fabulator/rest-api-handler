@@ -24,7 +24,7 @@ export default class DefaultResponseProcessor<ResponseType = any> {
      */
     public constructor(Exception: ApiExceptionConstructor<ResponseType>, decoder?: BodyDecoder<ResponseType>) {
         this.Exception = Exception;
-        this.decoder = decoder || this.decodeResponse;
+        this.decoder = decoder || DefaultResponseProcessor.decodeResponse;
     }
 
     public async processResponse(response: Response, request: Request): Promise<ApiResponseType<ResponseType>> {
@@ -43,7 +43,7 @@ export default class DefaultResponseProcessor<ResponseType = any> {
         return toRespond;
     }
 
-    private decodeResponse(response: Response): Promise<Blob | Object | string> {
+    private static decodeResponse(response: Response): Promise<Blob | Object | string> {
         const contentType: string | null = response.headers.get('content-type');
 
         // on default decode response as text

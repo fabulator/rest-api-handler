@@ -1,6 +1,6 @@
 {
   "name": "rest-api-handler",
-  "version": "1.8.1",
+  "version": "2.0.0",
   "description": "Handler for REST APIs",
   "main": "dist/index.js",
   "jsnext:main": "dist/index.esm.js",
@@ -22,7 +22,7 @@
     "fetch"
   ],
   "devDependencies": {
-    "@socifi/babel-config": "^0.5.2",
+    "@socifi/babel-config": "^0.6.0",
     "@socifi/eslint-config": "^2.0.1",
     "@socifi/jest-config": "^2.0.1",
     "@socifi/rollup-config": "^2.0.1",
@@ -30,12 +30,12 @@
   },
   "scripts": {
     "lint": "eslint --ext .ts ./src ./tests",
-    "lint-export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
+    "lint:export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
     "tsc": "tsc",
     "test": "jest",
     "test:build": "npm run test -- --config jest.config.build.js",
     "build": "rollup --config ./rollup.config.js",
     "test:all": "npm run lint && npm run tsc && npm run test",
-    "prepublishOnly": "npm run build && npm run test-build"
+    "prepublishOnly": "npm run build && npm run tsc && npm run test:build"
   }
 }

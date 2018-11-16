@@ -178,7 +178,7 @@ describe('Api service testing', () => {
             };
 
             api = new Api(apiUrl, [
-                { processResponse: processor1 },
+                processor1,
                 { processResponse: processor2 },
             ]);
             api
