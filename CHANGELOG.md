@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 
 
+## [2.0.0] 2018-11-16
+### Changed
+- Formats name are changed and no longer exported from library by them self. They are accessible from Api.FORMATS
+- Converted from flow to typescript
+
+### Remove
+ - defaultResponseProcessor method
+ - docs config
+
+
 ## [1.8.1] 2018-06-27
 ### Fixed
 - Encoding of get parameters

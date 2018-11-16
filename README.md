@@ -36,10 +36,10 @@ api.get('https://api.blockcypher.com/v1/btc/main');
 In default configuration, response is same as in Fetch API. That why you can define your own processors that will parse responses or use default one provided by this library.
 
 ```javascript
-import { Api, defaultResponseProcessor } from 'rest-api-handler';
+import { Api, defaultResponseProcessor, DefaultApiException } from 'rest-api-handler';
 
 const api = new Api('https://api.blockcypher.com', [
-    defaultResponseProcessor,
+    new DefaultResponseProcessor(DefaultApiException),
 ]);
 
 api.get('v1/btc/main').then((response) => {
@@ -54,7 +54,7 @@ Here is how to create your own response processors and use them in the chain:
 
 ```javascript
 const api = new Api('//some.api.com', [
-    defaultResponseProcessor,
+    new DefaultResponseProcessor(DefaultApiException),
     onlyDataProcessor,
 ]);
 
@@ -92,12 +92,12 @@ api.request('endpoint', 'PUT', {
 By default, data for POST and PUT are encoded as JSON. You can also encode them as FormData. This can be used for images or files uploading.
 
 ```javascript
-import { Api, defaultResponseProcessor, FORM_DATA_FORMAT } from 'rest-api-handler';
+import { Api } from 'rest-api-handler';
 const api = new Api('//some.api.com');
 
 api.post('file-upload', {
     file: fileObject,
-}, FORM_DATA_FORMAT);
+}, Api.FORMATS.FORM_DATA);
 
 ```
 
@@ -136,9 +136,9 @@ const FormData = require('form-data');
 
 global.FormData = FormData;
 
-const { Api, defaultResponseProcessor } = require('rest-api-handler');
+const { Api, DefaultResponseProcessor, DefaultApiException } = require('rest-api-handler');
 
-const api = new Api('https://api.blockcypher.com', [ defaultResponseProcessor ]);
+const api = new Api('https://api.blockcypher.com', [ new DefaultResponseProcessor(DefaultApiException), ]);
 
 api.get('v1/btc/main').then((response) => {
     console.log(response.data);
