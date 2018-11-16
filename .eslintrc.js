@@ -7,5 +7,5 @@ module.exports = {
     ],
     rules: {
         'unicorn/catch-error-name': [2, { name: 'exception' }],
-    }
+    },
 };
