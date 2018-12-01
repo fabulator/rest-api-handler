@@ -30,8 +30,7 @@ describe('Api service testing', () => {
 
     describe('Test request', () => {
         beforeEach(() => {
-            // eslint-disable-next-line no-undef
-            spyOn(window, 'fetch').and.callFake((request: Request) => {
+            window.fetch = jest.fn().mockImplementation((request: Request) => {
                 return Promise.resolve(request);
             });
             api = new Api(apiUrl);
