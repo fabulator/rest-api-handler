@@ -6,6 +6,7 @@ export type ApiResponseType<Respond = any> = {
     data: Respond,
     status: number,
     source: Response,
+    request: Request,
 };
 
 /**
@@ -34,6 +35,7 @@ export default class DefaultResponseProcessor<ResponseType = any> {
             data: decodedResponse,
             status: response.status,
             source: response,
+            request,
         };
 
         if (!response.ok) {

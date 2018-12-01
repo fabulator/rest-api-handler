@@ -20,20 +20,13 @@ export default class DefaultApiException<ResponseType> extends Error implements 
     private response: ApiResponseType<ResponseType>;
 
     /**
-     * Request that failed.
-     */
-    private request: Request;
-
-    /**
      * Constructor.
      *
      * @param response - Processed response from server.
-     * @param request - Fetch Request.
      */
-    public constructor(response: ApiResponseType<ResponseType>, request: Request) {
+    public constructor(response: ApiResponseType<ResponseType>) {
         super(`Api exception: ${JSON.stringify(response.data)}`);
         this.response = response;
-        this.request = request;
 
         // babel bug - https://github.com/babel/babel/issues/4485
         // @ts-ignore
@@ -45,6 +38,6 @@ export default class DefaultApiException<ResponseType> extends Error implements 
     }
 
     public getRequest() {
-        return this.request;
+        return this.response.request;
     }
 }
