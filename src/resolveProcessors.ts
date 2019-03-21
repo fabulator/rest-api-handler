@@ -14,7 +14,7 @@ export type ProcessorAdapter<Input = any, Output = any> = {
  * @param i - Index of current processor.
  * @returns Processed response
  */
-export default async function resolveProcessors<Processors extends Array<ProcessorAdapter> = Array<ProcessorAdapter>>(
+export default async function resolveProcessors<Processors extends ProcessorAdapter[] = ProcessorAdapter[]>(
     response: any,
     list: Processors,
     request: Request,

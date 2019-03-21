@@ -2,12 +2,12 @@ import { ApiExceptionConstructor } from './DefaultApiException';
 
 export type BodyDecoder<Decoded> = (response: Response) => Promise<Decoded>;
 
-export type ApiResponseType<Respond = any> = {
+export interface ApiResponseType<Respond = any> {
     data: Respond,
     status: number,
     source: Response,
     request: Request,
-};
+}
 
 /**
  * Processor provider that process response from API and throw custom Exception.
@@ -45,7 +45,7 @@ export default class DefaultResponseProcessor<ResponseType = any> {
         return toRespond;
     }
 
-    private static decodeResponse(response: Response): Promise<Blob | Object | string> {
+    private static decodeResponse(response: Response): Promise<Blob | Record<string, any> | string> {
         const contentType: string | null = response.headers.get('content-type');
 
         // on default decode response as text

@@ -3,7 +3,7 @@ import * as FORMATS from './data-formats';
 
 type MethodType = 'GET' | 'POST' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PUT' | 'PATCH' | 'TRACE';
 
-type HeadersParameters = {[key: string]: string | number};
+interface HeadersParameters {[key: string]: string | number}
 
 /**
  * Class for handling responses and requests.
@@ -27,7 +27,7 @@ export default class Api<ProcessedResponse = any> {
     /**
      * List of processors that parse response from server.
      */
-    private processors: Array<ProcessorAdapter>;
+    private processors: ProcessorAdapter[];
 
     /**
      * List of formatter you can use to process content of body request.
@@ -44,7 +44,7 @@ export default class Api<ProcessedResponse = any> {
      */
     public constructor(
         apiUrl: string,
-        processors: Array<ProcessorAdapter> = [],
+        processors: ProcessorAdapter[] = [],
         defaultHeaders: HeadersParameters = {},
         defaultOptions: RequestInit = {},
     ) {
@@ -168,7 +168,7 @@ export default class Api<ProcessedResponse = any> {
      *
      * const { data } = await api.request('http://i-can-request-full-url.com/?a=b', 'GET')
      */
-    public request(
+    public async request(
         namespace: string,
         method: MethodType,
         options: RequestInit = {},
@@ -187,10 +187,9 @@ export default class Api<ProcessedResponse = any> {
             ...options,
         });
 
-        return this.fetchRequest(request)
-            .then((response: Response) => {
-                return resolveProcessors(response, this.processors, request);
-            });
+        const response = await this.fetchRequest(request);
+
+        return resolveProcessors(response, this.processors, request);
     }
 
     /**
@@ -207,7 +206,7 @@ export default class Api<ProcessedResponse = any> {
     public requestWithBody(
         namespace: string,
         method: MethodType,
-        data: Object,
+        data: Record<string, any>,
         format: FORMATS.Format,
         headers: HeadersParameters = {},
     ): Promise<ProcessedResponse> {
@@ -229,7 +228,7 @@ export default class Api<ProcessedResponse = any> {
      * // will call YOUR_URI/brand?id=5
      * console.log(data);
      */
-    public get(namespace: string, parameters: Object = {}, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
+    public get(namespace: string, parameters: Record<string, any> = {}, headers: HeadersParameters = {}): Promise<ProcessedResponse> {
         return this.request(`${namespace}${Api.convertParametersToUrl(parameters)}`, 'GET', {}, headers);
     }
 
@@ -244,7 +243,7 @@ export default class Api<ProcessedResponse = any> {
      */
     public post(
         namespace: string,
-        data: Object = {},
+        data: Record<string, any> = {},
         format: FORMATS.Format = FORMATS.JSON,
         headers: HeadersParameters = {},
     ): Promise<ProcessedResponse> {
@@ -262,7 +261,7 @@ export default class Api<ProcessedResponse = any> {
      */
     public put(
         namespace: string,
-        data: Object = {},
+        data: Record<string, any> = {},
         format: FORMATS.Format = FORMATS.JSON,
         headers: HeadersParameters = {},
     ): Promise<ProcessedResponse> {

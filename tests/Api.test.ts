@@ -167,7 +167,7 @@ describe('Api service testing', () => {
             expect(api.getDefaultHeaders()).toEqual({ c: 'd' });
         });
 
-        it('response should be processed multiple procesors', (done) => {
+        it('response should be processed multiple procesors', async (done) => {
             const processor1 = (): Promise<any> => {
                 return Promise.resolve({ data: { changed: 'response' }, status: 200 });
             };
@@ -180,13 +180,11 @@ describe('Api service testing', () => {
                 processor1,
                 { processResponse: processor2 },
             ]);
-            api
-                .get('some-namespace')
-                .then((response) => {
-                    expect(response).toEqual({ changed: 'response' });
-                    done();
-                    return response;
-                });
+
+            const response = await api.get('some-namespace');
+
+            expect(response).toEqual({ changed: 'response' });
+            done();
         });
 
         it('throws ApiException on API error', async () => {
