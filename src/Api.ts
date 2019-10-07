@@ -176,6 +176,7 @@ export default class Api<ProcessedResponse = any> {
     ): Promise<ProcessedResponse> {
         const urlToRequest = namespace.indexOf('http') === 0 ? namespace : `${this.apiUrl}/${namespace}`;
 
+        // eslint-disable-next-line compat/compat
         const request = new Request(urlToRequest, {
             ...this.defaultOptions,
             method,

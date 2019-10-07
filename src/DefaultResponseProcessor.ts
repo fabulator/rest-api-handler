@@ -53,11 +53,11 @@ export default class DefaultResponseProcessor<ResponseType = any> {
             return response.text();
         }
 
-        if (contentType.indexOf('json') >= 0) {
+        if (contentType.includes('json')) {
             return response.json();
         }
 
-        if (contentType.indexOf('text') >= 0 || contentType.indexOf('xml') >= 0) {
+        if (contentType.includes('text') || contentType.includes('xml')) {
             return response.text();
         }
 
