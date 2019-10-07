@@ -1,6 +1,12 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.2.0] 2019-10-07
+### Changed
+- Update babel dependency
+- Remove proto from DefaultException - not need from babel 7
+
+
 ## [2.1.0] 2018-12-01
 ### Added
 - Request info to Default response
