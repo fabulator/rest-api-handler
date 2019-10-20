@@ -15,10 +15,6 @@ jobs:
                 run: |
                     npm ci
                     npm run build
-            -   name: ESLint checks
-                uses: gimenete/eslint-action@1.0
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             -   name: NPM Test
                 run: |
                     npm run lint
