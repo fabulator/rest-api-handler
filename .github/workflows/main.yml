@@ -18,6 +18,6 @@ jobs:
             -   name: ESLint checks
                 uses: gimenete/eslint-action@1.0
             -   name: NPM Test
-                    run: |
-                        npm run lint
-                        npm run test
+                run: |
+                    npm run lint
+                    npm run test
