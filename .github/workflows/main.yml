@@ -11,9 +11,13 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: 12.x
-            - name: NPM Build and Test
+            - name: NPM Build
               run: |
                 npm ci
                 npm run build
-                npm run lint
-                npm run test
+            - name: ESLint checks
+                uses: gimenete/eslint-action@1.0
+            - name: NPM Test
+                run: |
+                    npm run lint
+                    npm run test
