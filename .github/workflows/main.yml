@@ -1,0 +1,21 @@
+name: Build
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v1
+            - name: Use Node.js 12.x
+              uses: actions/setup-node@v1
+              with:
+                  node-version: 12.x
+            - name: NPM Build and Test
+            - run: npm ci
+            - run: npm run build
+    lint:
+        needs: build
+        steps:
+            - run: npm run lint
+            - run: npm run test
