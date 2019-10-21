@@ -1,6 +1,13 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.3.0] 2019-10-21
+### Changed
+- [ec42ec9](https://github.com/fabulator/rest-api-handler/commit/ec42ec9504c8fa024165613f0f4f9b6c929d2aed) Update dependencies and activate automatic releases.
+
+### Other
+- [fc51917](https://github.com/fabulator/rest-api-handler/commit/fc51917344088980193ca6d5e8cd9a96671780c0) Update dependency @types/node to ^12.7.12
+
 ## [2.2.0] 2019-10-07
 ### Changed
 - Update babel dependency
