@@ -24,9 +24,9 @@ jobs:
             -   name: Use Node.js
                 uses: actions/setup-node@master
             -   name: Load dependencies
-                    uses: actions/download-artifact@v1
-                    with:
-                        name: node_modules
+                uses: actions/download-artifact@v1
+                with:
+                    name: node_modules
             -   name: NPM Test
                 run: |
                     npm run lint
