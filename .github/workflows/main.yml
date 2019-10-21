@@ -13,10 +13,10 @@ jobs:
             -   name: Install dependencies
                 run: npm ci
             -   name: Save dependencies
-                    uses: actions/upload-artifact@v1
-                    with:
-                        name: node_modules
-                        path: node_modules
+                uses: actions/upload-artifact@v1
+                with:
+                    name: node_modules
+                    path: node_modules
     test:
         needs: install
         runs-on: ubuntu-latest
