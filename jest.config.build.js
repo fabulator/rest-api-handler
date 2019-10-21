@@ -1,3 +1,1 @@
-const { setupTestFrameworkScriptFile, ...config } = require('@socifi/jest-config')('build');
-
-module.exports = config;
+module.exports = require('@socifi/jest-config')('build');
