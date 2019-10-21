@@ -15,6 +15,11 @@ jobs:
                 run: |
                     npm ci
                     npm run build
+            -   name: ESLint
+                run: npx github-actions-eslint-annotator
+                env:
+                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    PARTIAL_LINTING: true
             -   name: NPM Test
                 run: |
                     npm run lint

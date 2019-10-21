@@ -22,6 +22,7 @@
     "fetch"
   ],
   "devDependencies": {
+    "@neovici/github-actions-eslint-annotator": "^0.3.0",
     "@socifi/babel-config": "^0.7.0",
     "@socifi/eslint-config": "^2.9.0",
     "@socifi/jest-config": "^2.3.1",
