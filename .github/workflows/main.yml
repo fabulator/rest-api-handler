@@ -3,30 +3,30 @@ name: Build
 on: [push]
 
 jobs:
-    build:
+    install:
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@master
-            -   name: Use Node.js 12.x
+            -   name: Checkout
+                uses: actions/checkout@master
+            -   name: Use Node.js
                 uses: actions/setup-node@master
-                with:
-                    node-version: 12.x
-            -   name: NPM Build
-                run: |
-                    npm ci
-                    npm run build
-            -   name: NPM Test
-                run: |
-                    npm run lint
-                    npm run test
+            -   name: Install dependencies
+                run: npm ci
+            -   name: Save dependencies
+                    uses: actions/upload-artifact@v1
+                    with:
+                        name: node_modules
+                        path: node_modules
     test:
-        needs: build
+        needs: install
         runs-on: ubuntu-latest
         steps:
-            -   name: Use Node.js 12.x
+            -   name: Use Node.js
                 uses: actions/setup-node@master
-                with:
-                    node-version: 12.x
+            -   name: Load dependencies
+                    uses: actions/download-artifact@v1
+                    with:
+                        name: node_modules
             -   name: NPM Test
                 run: |
                     npm run lint
