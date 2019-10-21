@@ -31,7 +31,7 @@
     "cross-fetch": "^3.0.4"
   },
   "scripts": {
-    "lint": "eslint --ext .ts ./src ./tests",
+    "lint": "eslint .",
     "lint:export": "npm run lint -- -o ./tests_results/checkstyle/js-checkstyle.xml -f checkstyle",
     "tsc": "tsc",
     "test": "jest",

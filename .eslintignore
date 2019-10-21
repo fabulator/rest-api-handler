@@ -1,2 +1,5 @@
 # Ignore built files except build/index.ts
 rollup.config.js
+dist
+jest.config.js
+jest.config.build.js

@@ -6,20 +6,27 @@ jobs:
     build:
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v1
+            -   uses: actions/checkout@master
             -   name: Use Node.js 12.x
-                uses: actions/setup-node@v1
+                uses: actions/setup-node@master
                 with:
                     node-version: 12.x
             -   name: NPM Build
                 run: |
                     npm ci
                     npm run build
-            -   name: ESLint
-                run: npx github-actions-eslint-annotator
-                env:
-                    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                    PARTIAL_LINTING: true
+            -   name: NPM Test
+                run: |
+                    npm run lint
+                    npm run test
+    test:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            -   name: Use Node.js 12.x
+                uses: actions/setup-node@master
+                with:
+                    node-version: 12.x
             -   name: NPM Test
                 run: |
                     npm run lint
