@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.4.0] 2019-10-24
+### Changed
+- [d4b99bf](https://github.com/fabulator/rest-api-handler/commit/d4b99bf46bf68d013e833d24968e05939b0164a3) Update dev dependency @socifi/rollup-config to ^2.2.2
+
 ## [2.3.0] 2019-10-21
 ### Changed
 - [ec42ec9](https://github.com/fabulator/rest-api-handler/commit/ec42ec9504c8fa024165613f0f4f9b6c929d2aed) Update dependencies and activate automatic releases.
