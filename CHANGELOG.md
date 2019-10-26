@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.4.1] 2019-10-26
+### Fixed
+- [6f3d709](https://github.com/fabulator/rest-api-handler/commit/6f3d70963c80255d7f55316367ba074d67ca1027) Add missing dependenci babel runtime
+
 ## [2.4.0] 2019-10-24
 ### Changed
 - [d4b99bf](https://github.com/fabulator/rest-api-handler/commit/d4b99bf46bf68d013e833d24968e05939b0164a3) Update dev dependency @socifi/rollup-config to ^2.2.2
