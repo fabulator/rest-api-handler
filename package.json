@@ -39,5 +39,8 @@
         "test:all": "npm run lint && npm run tsc && npm run test",
         "prepublishOnly": "npm run build && npm run tsc && npm run test:build",
         "release": "semantic-release"
+    },
+    "dependencies": {
+        "@babel/runtime": "^7.6.3"
     }
 }
