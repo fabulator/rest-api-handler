@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.13.0] 2020-03-06
+### Changed
+- [bb56e3c](https://github.com/fabulator/rest-api-handler/commit/bb56e3c9ff8117f0a97202ae745de04d787c2c8a) Update dependency @babel/runtime to v7.8.7
+- [2b49a97](https://github.com/fabulator/rest-api-handler/commit/2b49a97b3721f02f70e5bb1040f332933fc97564) Update dev dependency @socifi/eslint-config to v2.10.2 
+
 ## [2.12.0] 2020-01-31
 ### Changed
 - [3184428](https://github.com/fabulator/rest-api-handler/commit/31844285c35d6c8f5b8dcbe89cf3d745c0ab191f) Update dependency @babel/runtime to v7.8.4
