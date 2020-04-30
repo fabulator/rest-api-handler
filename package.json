@@ -1,6 +1,6 @@
 {
     "name": "rest-api-handler",
-    "version": "2.14.0",
+    "version": "2.15.0",
     "description": "Handler for REST APIs",
     "main": "dist/index.js",
     "jsnext:main": "dist/index.esm.js",
