@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## [2.16.0] 2020-05-29
+### Changed
+- [8fbe720](https://github.com/fabulator/rest-api-handler/commit/8fbe72052a6965d589e3ca1fff09c0d40fc80d77) Update dependency @babel/runtime to v7.10.1
+
 ## [2.15.0] 2020-04-30
 ### Changed
 - [d1e0dbc](https://github.com/fabulator/rest-api-handler/commit/d1e0dbc855f9629c3845436dd93226ff87000b8d) Update dependency @babel/runtime to v7.9.6
