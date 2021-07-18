@@ -1,6 +1,25 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## v2.21.0 (2021-07-18)
+### Changed
+- [dd68bb9](https://github.com/fabulator/rest-api-handler/commit/dd68bb9a250c0cc85b87f51a75f9fd6d60ff510b) Update dependencies
+- [71e9c33](https://github.com/fabulator/rest-api-handler/commit/71e9c33fd45779c42499e61fab7666808e6c01f5) Update dev dependency semantic-release-config-fabulator to v2 
+
+### Fixed
+- [4e4aa62](https://github.com/fabulator/rest-api-handler/commit/4e4aa627b682c95e779dab0e984779a9155159b1) Update lock for security updated
+- [84e1260](https://github.com/fabulator/rest-api-handler/commit/84e1260c9a7bf6b99933f6ef421f0614037db00d) Update lock for security updated
+- [b4b685c](https://github.com/fabulator/rest-api-handler/commit/b4b685c82b3c244c37b0f76db2faf91e5dc90f49) Update lock for security updated
+- [0ce5a2d](https://github.com/fabulator/rest-api-handler/commit/0ce5a2dcdcd5055584e3f6081f3670b17cd168c3) Update lock for security updated
+- [34a41cb](https://github.com/fabulator/rest-api-handler/commit/34a41cb2d956d12af1ccc72c20179051a72c5630) Update lock for security updated
+- [e27c682](https://github.com/fabulator/rest-api-handler/commit/e27c6822fd4900ad7791f4fb766fe409cd2c00a6) Update lock for security updated
+- [589ca0b](https://github.com/fabulator/rest-api-handler/commit/589ca0ba44aaaad5085ff83ae395ab453aa32e99) Update lock for security updated
+- [88553be](https://github.com/fabulator/rest-api-handler/commit/88553be778bcd6fba1f350168f899223bd06df16) Update lock for security updated
+- [c949543](https://github.com/fabulator/rest-api-handler/commit/c949543f0a1b85ba43e66908f92fdc1dbcdb2c9a) Update lock for security updated
+- [e929ef6](https://github.com/fabulator/rest-api-handler/commit/e929ef6492cf970070b1438eb672bce954fb9f2d) Update lock for security updated
+- [da5890a](https://github.com/fabulator/rest-api-handler/commit/da5890a283cd48f196d942dd76f2851cd2ef3d13) Update lock for security updated
+- [d22e9c0](https://github.com/fabulator/rest-api-handler/commit/d22e9c0e255867b6bdde71901ed6bebf9d82461a) Security lock update
+
 ## [2.20.0] 2020-07-15
 ### Changed
 - [c3ec54f](https://github.com/fabulator/rest-api-handler/commit/c3ec54f558aa52d5d0d150fbb6f3d4a79fb1c45d) Update dependency @babel/runtime to v7.10.5
