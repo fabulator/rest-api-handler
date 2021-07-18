@@ -1,12 +1,8 @@
 import 'cross-fetch/polyfill';
-import {
-    Api,
-    DefaultResponseProcessor,
-    DefaultApiException,
-} from '../src';
+import { Api, DefaultResponseProcessor, DefaultApiException } from '../src';
 
 class FormData {
-    public data: {[key: string]: string} = {};
+    public data: { [key: string]: string } = {};
 
     public append(key: string, value: string) {
         this.data[key] = value;
@@ -17,16 +13,14 @@ class FormData {
     }
 }
 
-// @ts-ignore
+// @ts-expect-error ts doest handle global
 global.FormData = FormData;
 
 const apiUrl = 'http://api-endpoint.dev';
 const headers = new Headers({});
 
 describe('Api service testing', () => {
-    let api: Api = new Api(apiUrl, [
-        new DefaultResponseProcessor(DefaultApiException),
-    ]);
+    let api: Api = new Api(apiUrl, [new DefaultResponseProcessor(DefaultApiException)]);
 
     describe('Test request', () => {
         beforeEach(() => {
@@ -43,9 +37,11 @@ describe('Api service testing', () => {
         it('should call request', async () => {
             const request = await api.request('some-namespace', 'GET');
 
-            expect(request).toEqual(new Request(`${apiUrl}/some-namespace`, {
-                headers,
-            }));
+            expect(request).toEqual(
+                new Request(`${apiUrl}/some-namespace`, {
+                    headers,
+                }),
+            );
         });
 
         it('should call request with full url', async () => {
@@ -72,9 +68,13 @@ describe('Api service testing', () => {
         });
 
         it('should call get request with custom headers', async () => {
-            const request = await api.get('some-namespace', {}, {
-                test: 'head',
-            });
+            const request = await api.get(
+                'some-namespace',
+                {},
+                {
+                    test: 'head',
+                },
+            );
             expect(request.headers.get('test')).toEqual('head');
         });
 
@@ -121,10 +121,10 @@ describe('Api service testing', () => {
             const formdata = new FormData();
             formdata.append('a', 'b');
             formdata.append('b', '2');
-            // @ts-ignore
             const request: Request = new Request(`${apiUrl}/some-namespace`, {
                 headers,
                 method: 'PUT',
+                // @ts-expect-error ts doest handle Request type
                 body: formdata,
             });
 
@@ -167,7 +167,8 @@ describe('Api service testing', () => {
             expect(api.getDefaultHeaders()).toEqual({ c: 'd' });
         });
 
-        it('response should be processed multiple procesors', async (done) => {
+        // eslint-disable-next-line jest/no-done-callback
+        it('response should be processed multiple procesors', async () => {
             const processor1 = (): Promise<any> => {
                 return Promise.resolve({ data: { changed: 'response' }, status: 200 });
             };
@@ -176,38 +177,35 @@ describe('Api service testing', () => {
                 return Promise.resolve(response.data);
             };
 
-            api = new Api(apiUrl, [
-                processor1,
-                { processResponse: processor2 },
-            ]);
+            api = new Api(apiUrl, [processor1, { processResponse: processor2 }]);
 
             const response = await api.get('some-namespace');
 
             expect(response).toEqual({ changed: 'response' });
-            done();
         });
 
         it('throws ApiException on API error', async () => {
             const processor1 = (): Promise<any> => {
-                return Promise.resolve(new Response(JSON.stringify({ a: 'b' }), {
-                    headers: new Headers({
-                        'content-type': 'application/json',
+                return Promise.resolve(
+                    new Response(JSON.stringify({ a: 'b' }), {
+                        headers: new Headers({
+                            'content-type': 'application/json',
+                        }),
+                        status: 500,
                     }),
-                    status: 500,
-                }));
+                );
             };
 
-            api = new Api(apiUrl, [
-                { processResponse: processor1 },
-                new DefaultResponseProcessor(DefaultApiException),
-            ]);
+            api = new Api(apiUrl, [{ processResponse: processor1 }, new DefaultResponseProcessor(DefaultApiException)]);
 
             let request;
 
             try {
                 request = await api.get('some-namespace');
             } catch (exception) {
+                // eslint-disable-next-line jest/no-conditional-expect,jest/no-try-expect
                 expect(exception instanceof DefaultApiException).toBeTruthy();
+                // eslint-disable-next-line jest/no-conditional-expect,jest/no-try-expect
                 expect(exception.getRequest() instanceof Request).toBeTruthy();
             }
 
@@ -219,16 +217,14 @@ describe('Api service testing', () => {
                 return Promise.resolve({ status: 500 });
             };
 
-            api = new Api(apiUrl, [
-                { processResponse: processor1 },
-                new DefaultResponseProcessor(DefaultApiException),
-            ]);
+            api = new Api(apiUrl, [{ processResponse: processor1 }, new DefaultResponseProcessor(DefaultApiException)]);
 
             let request;
 
             try {
                 request = await api.get('some-namespace');
             } catch (exception) {
+                // eslint-disable-next-line jest/no-conditional-expect,jest/no-try-expect
                 expect(exception instanceof DefaultApiException).toBeFalsy();
             }
 

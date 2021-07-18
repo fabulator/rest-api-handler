@@ -1,1 +1,3 @@
-module.exports = require('@socifi/jest-config')('build');
+module.exports = require('jest-config-fabulator')('build', {
+    testEnvironment: 'jsdom',
+});

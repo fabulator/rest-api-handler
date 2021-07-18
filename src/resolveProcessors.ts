@@ -1,9 +1,11 @@
 // processor can be instance of class
 type Processor<Input = any, Output = any> = (response: Input, request: Request) => Promise<Output>;
 
-export type ProcessorAdapter<Input = any, Output = any> = {
-    processResponse: Processor<Input, Output>,
-} | Processor<Input, Output>;
+export type ProcessorAdapter<Input = any, Output = any> =
+    | {
+          processResponse: Processor<Input, Output>;
+      }
+    | Processor<Input, Output>;
 
 /**
  * Resolve given processor.
@@ -26,9 +28,8 @@ export default async function resolveProcessors<Processors extends ProcessorAdap
         return response;
     }
 
-    const processedResponse = typeof processor === 'function'
-        ? await processor(response, request)
-        : await processor.processResponse(response, request);
+    const processedResponse =
+        typeof processor === 'function' ? await processor(response, request) : await processor.processResponse(response, request);
 
     if (list[i + 1]) {
         return resolveProcessors(processedResponse, list, request, i + 1);

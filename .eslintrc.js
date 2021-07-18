@@ -1,5 +1,5 @@
 module.exports = {
     extends: [
-        '@socifi',
+        'eslint-config-fabulator',
     ],
 };

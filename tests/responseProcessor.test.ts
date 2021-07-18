@@ -3,7 +3,7 @@ import { DefaultResponseProcessor, DefaultApiException } from '../src';
 
 describe('Response processor testing', () => {
     let defaultResponseProcessor: DefaultResponseProcessor;
-    // @ts-ignore
+    // @ts-expect-error ts has problem with Request
     const request = new Request({});
 
     beforeEach(() => {
@@ -70,6 +70,7 @@ describe('Response processor testing', () => {
         try {
             processedResponse = await defaultResponseProcessor.processResponse(response, request);
         } catch (exception) {
+            // eslint-disable-next-line jest/no-conditional-expect,jest/no-try-expect
             expect(exception.getResponse().data).toEqual({ a: 'b' });
         }
 

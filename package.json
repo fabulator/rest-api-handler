@@ -3,8 +3,8 @@
     "version": "2.20.0",
     "description": "Handler for REST APIs",
     "main": "dist/index.js",
-    "jsnext:main": "dist/index.esm.js",
-    "module": "dist/index.esm.js",
+    "module": "es/index.js",
+    "jsnext:main": "es/index.js",
     "types": "dist/index.d.ts",
     "repository": {
         "type": "git",
@@ -22,16 +22,17 @@
         "fetch"
     ],
     "devDependencies": {
-        "@socifi/babel-config": "^1.0.0",
-        "@socifi/commitlint-config": "^1.1.0",
-        "@socifi/eslint-config": "^2.10.0",
-        "@socifi/jest-config": "^2.4.1",
-        "@socifi/rollup-config": "^2.2.2",
-        "cross-fetch": "^3.0.4",
-        "semantic-release-config-fabulator": "^2.0.0"
+        "babel-config-fabulator": "^1.2.0",
+        "commitlint-config-fabulator": "^2.0.1",
+        "eslint-config-fabulator": "^1.2.2",
+        "jest-config-fabulator": "^1.1.0",
+        "rollup-config-fabulator": "^1.1.0",
+        "cross-fetch": "^3.1.4",
+        "semantic-release-config-fabulator": "^2.6.2"
     },
     "scripts": {
         "lint": "eslint --ext .ts ./src ./tests",
+        "lint:fix": "npm run lint -- --fix",
         "tsc": "tsc",
         "test": "jest",
         "test:build": "npm run test -- --config jest.config.build.js",
@@ -41,6 +42,6 @@
         "release": "semantic-release"
     },
     "dependencies": {
-        "@babel/runtime": "^7.6.3"
+        "@babel/runtime": "^7.14.6"
     }
 }

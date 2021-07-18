@@ -3,7 +3,9 @@ import * as FORMATS from './data-formats';
 
 type MethodType = 'GET' | 'POST' | 'DELETE' | 'HEAD' | 'OPTIONS' | 'PUT' | 'PATCH' | 'TRACE';
 
-interface HeadersParameters {[key: string]: string | number}
+interface HeadersParameters {
+    [key: string]: string | number;
+}
 
 /**
  * Class for handling responses and requests.
@@ -65,7 +67,7 @@ export default class Api<ProcessedResponse = any> {
      * const body = Api.convertData({ a: 'b' }, Api.FORMATS.JSON);
      * // output is {"a":"b"}
      */
-    public static convertData(data: {[key: string]: any}, to: FORMATS.Format = FORMATS.JSON): string | FormData {
+    public static convertData(data: { [key: string]: any }, to: FORMATS.Format = FORMATS.JSON): string | FormData {
         if (to === FORMATS.FORM_DATA) {
             const formData = new FormData();
             Object.entries(data).forEach(([key, value]) => {
@@ -91,16 +93,18 @@ export default class Api<ProcessedResponse = any> {
      * const parameters = Api.convertData({ a: '%b%' });
      * // output is ?a=%25b%25
      */
-    public static convertParametersToUrl(parameters: {[key: string]: any}): string {
+    public static convertParametersToUrl(parameters: { [key: string]: any }): string {
         const keys = Object.keys(parameters);
 
         if (keys.length === 0) {
             return '';
         }
 
-        return `?${keys.map((key: string) => {
-            return `${key}=${encodeURIComponent(parameters[key])}`;
-        }).join('&')}`;
+        return `?${keys
+            .map((key: string) => {
+                return `${key}=${encodeURIComponent(parameters[key])}`;
+            })
+            .join('&')}`;
     }
 
     /**
@@ -180,7 +184,9 @@ export default class Api<ProcessedResponse = any> {
         const request = new Request(urlToRequest, {
             ...this.defaultOptions,
             method,
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore
+            // eslint-disable-next-line compat/compat
             headers: new Headers({
                 ...this.getDefaultHeaders(),
                 ...headers,
@@ -211,9 +217,14 @@ export default class Api<ProcessedResponse = any> {
         format: FORMATS.Format,
         headers: HeadersParameters = {},
     ): Promise<ProcessedResponse> {
-        return this.request(namespace, method, {
-            body: Api.convertData(data, format),
-        }, headers);
+        return this.request(
+            namespace,
+            method,
+            {
+                body: Api.convertData(data, format),
+            },
+            headers,
+        );
     }
 
     /**

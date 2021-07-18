@@ -3,10 +3,10 @@ import { ApiExceptionConstructor } from './DefaultApiException';
 export type BodyDecoder<Decoded> = (response: Response) => Promise<Decoded>;
 
 export interface ApiResponseType<Respond = any> {
-    data: Respond,
-    status: number,
-    source: Response,
-    request: Request,
+    data: Respond;
+    request: Request;
+    source: Response;
+    status: number;
 }
 
 /**

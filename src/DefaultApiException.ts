@@ -2,12 +2,13 @@
 import { ApiResponseType } from './DefaultResponseProcessor';
 
 export interface ApiExceptionConstructor<ResponseType> {
-    new (response: ApiResponseType<ResponseType>, request: Request): ApiExceptionInterface<ResponseType>,
+    // eslint-disable-next-line no-use-before-define
+    new (response: ApiResponseType<ResponseType>, request: Request): ApiExceptionInterface<ResponseType>;
 }
 
 export interface ApiExceptionInterface<ResponseType> {
-    getResponse: () => ApiResponseType<ResponseType>,
-    getRequest: () => Request,
+    getRequest: () => Request;
+    getResponse: () => ApiResponseType<ResponseType>;
 }
 
 /**
