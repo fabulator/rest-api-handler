@@ -1,6 +1,6 @@
 {
     "name": "rest-api-handler",
-    "version": "2.21.6",
+    "version": "2.21.7",
     "description": "Handler for REST APIs",
     "main": "dist/index.js",
     "module": "es/index.js",
