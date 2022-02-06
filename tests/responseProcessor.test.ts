@@ -70,7 +70,7 @@ describe('Response processor testing', () => {
         try {
             processedResponse = await defaultResponseProcessor.processResponse(response, request);
         } catch (exception) {
-            // eslint-disable-next-line jest/no-conditional-expect,jest/no-try-expect
+            // eslint-disable-next-line jest/no-conditional-expect
             expect(exception.getResponse().data).toEqual({ a: 'b' });
         }
 
