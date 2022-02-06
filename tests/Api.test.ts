@@ -203,9 +203,9 @@ describe('Api service testing', () => {
             try {
                 request = await api.get('some-namespace');
             } catch (exception) {
-                // eslint-disable-next-line jest/no-conditional-expect,jest/no-try-expect
+                // eslint-disable-next-line jest/no-conditional-expect
                 expect(exception instanceof DefaultApiException).toBeTruthy();
-                // eslint-disable-next-line jest/no-conditional-expect,jest/no-try-expect
+                // eslint-disable-next-line jest/no-conditional-expect
                 expect(exception.getRequest() instanceof Request).toBeTruthy();
             }
 
@@ -224,7 +224,7 @@ describe('Api service testing', () => {
             try {
                 request = await api.get('some-namespace');
             } catch (exception) {
-                // eslint-disable-next-line jest/no-conditional-expect,jest/no-try-expect
+                // eslint-disable-next-line jest/no-conditional-expect
                 expect(exception instanceof DefaultApiException).toBeFalsy();
             }
 
