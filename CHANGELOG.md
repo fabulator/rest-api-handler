@@ -1,6 +1,33 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## v2.22.0 (2022-02-06)
+### Changed
+- [5e9b0e0](https://github.com/fabulator/rest-api-handler/commit/5e9b0e08283ff84ff3c877a0243aef12dd8e3e0d) Update dependencies.
+- [7472fd2](https://github.com/fabulator/rest-api-handler/commit/7472fd2c2db8c0475b358f76b0a03c951de3143c) Update dependency json-schema to 0.4.0 [SECURITY]
+- [d16f4ed](https://github.com/fabulator/rest-api-handler/commit/d16f4ed4f6c1cfb01b7d727b50f2c1045142c756) Update dependency ansi-regex to 5.0.1 [SECURITY]
+
+### Fixed
+- [bfeb33a](https://github.com/fabulator/rest-api-handler/commit/bfeb33a350ec753e2379eeaed9ba43694f42ac57) Update lock for security updated
+- [37d7dfe](https://github.com/fabulator/rest-api-handler/commit/37d7dfe7bc7b26962b38966eb2e409d0a63e935d) Update lock for security updated
+- [04c3ad3](https://github.com/fabulator/rest-api-handler/commit/04c3ad310649b5d247d3083326795cd31d00ee1d) Update lock for security updated
+- [320d036](https://github.com/fabulator/rest-api-handler/commit/320d0368df7b08e7eb747d08574f1b88930c6248) Update lock for security updated
+- [f98af7f](https://github.com/fabulator/rest-api-handler/commit/f98af7fd166d25eb6b208f97afe92d0e87d6d38e) Update lock for security updated
+- [22c55ae](https://github.com/fabulator/rest-api-handler/commit/22c55aee0ae2044b962664b32a148c12f0e5ef77) Update lock for security updated
+- [911982d](https://github.com/fabulator/rest-api-handler/commit/911982d61c119a6a3a1908644c7075d56189d560) Update lock for security updated
+- [1e7374f](https://github.com/fabulator/rest-api-handler/commit/1e7374f21737b131ac17341fbb4b086ef81f5138) Update lock for security updated
+- [a16837d](https://github.com/fabulator/rest-api-handler/commit/a16837d1d991f73556eef1a3dd122b31c9efdb71) Update lock for security updated
+- [c6726da](https://github.com/fabulator/rest-api-handler/commit/c6726dac7fe8d015bb5834301c61b0e78d392b3f) Update lock for security updated
+- [e9bfe51](https://github.com/fabulator/rest-api-handler/commit/e9bfe51026b7e549f58ad5e5a7459cf19749402c) Update lock for security updated
+- [f6c55e0](https://github.com/fabulator/rest-api-handler/commit/f6c55e071c1fae72bbea61df6d22b07cd5f8ace9) Update lock for security updated
+- [ec0b311](https://github.com/fabulator/rest-api-handler/commit/ec0b3113baa129d4c40c65317d01dae92a96e42e) Update lock for security updated
+- [cbaa599](https://github.com/fabulator/rest-api-handler/commit/cbaa599e533913055efca7b92fb42e2996d588d5) Update lock for security updated
+- [959317b](https://github.com/fabulator/rest-api-handler/commit/959317b55b45f2ff3664bee07df646181dcf5517) Update lock for security updated
+- [031a29d](https://github.com/fabulator/rest-api-handler/commit/031a29d7ea0858b564dc300d6ee6210fc485260f) Update lock for security updated
+- [a7fecd1](https://github.com/fabulator/rest-api-handler/commit/a7fecd1a047076a9f1165b5b321395a6a1dac670) Update lock for security updated
+- [e953228](https://github.com/fabulator/rest-api-handler/commit/e95322809a5d4c607e50297cfa2dc059bf86a21e) Update lock for security updated
+- [9a06c3c](https://github.com/fabulator/rest-api-handler/commit/9a06c3c7cd97c6312d82b703d4d1a93fea92f8e0) Update lock for security updated
+
 ## v2.21.9 (2021-08-23)
 ### Fixed
 - [4a3aa64](https://github.com/fabulator/rest-api-handler/commit/4a3aa648138066b542e669fe53ec390cc95a0377) Update lock for security updated
