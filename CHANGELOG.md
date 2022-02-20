@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file.
 
+## v2.22.5 (2022-02-20)
+### Fixed
+- [2585a67](https://github.com/fabulator/rest-api-handler/commit/2585a6787af11bed998d56161f381bde30ccf992) Update lock to make security bots happy.
+
 ## v2.22.4 (2022-02-14)
 ### Fixed
 - [a681e16](https://github.com/fabulator/rest-api-handler/commit/a681e1616074c122bab89edd745ea0433434eb83) Update lock to make security bots happy.
