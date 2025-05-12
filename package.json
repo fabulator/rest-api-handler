@@ -42,6 +42,6 @@
         "release": "semantic-release"
     },
     "dependencies": {
-        "@babel/runtime": "^7.17.0"
+        "@babel/runtime": "^7.26.10"
     }
 }
